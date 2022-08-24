@@ -60,8 +60,8 @@ namespace SchedulingApplication
             string password = tbPassword.Text;
 
             MySqlCommand cmd = new MySqlCommand();
-            cmd = (SELECT count(*) FROM user WHERE userName = tbAccountName.Text AND password = tbPassword.Text, DBConnection.conn);
-            adap.Fill(dt);
+            //cmd = (SELECT count(*) FROM user WHERE userName = tbAccountName.Text AND password = tbPassword.Text, DBConnection.conn);
+            //adap.Fill(dt);
             
             /*if (read.HasRows)
             {
