@@ -1,4 +1,5 @@
-﻿namespace SchedulingApplication
+﻿
+namespace Scheduling_Appointment
 {
     partial class Appointments
     {
@@ -28,150 +29,145 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnAdd = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.btnModify = new System.Windows.Forms.Button();
-            this.appointmentMonth = new System.Windows.Forms.MonthCalendar();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
+            this.mySqlCommand1 = new MySqlConnector.MySqlCommand();
+            this.appointmentsDGV = new System.Windows.Forms.DataGridView();
             this.btnWeek = new System.Windows.Forms.Button();
             this.btnMonth = new System.Windows.Forms.Button();
-            this.btnMonthlyReport = new System.Windows.Forms.Button();
-            this.btnUserSchedules = new System.Windows.Forms.Button();
-            this.btnCustomersandAppts = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.btnAddModify = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.btnConn = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.appointmentsDGV)).BeginInit();
             this.SuspendLayout();
             // 
-            // btnAdd
+            // monthCalendar1
             // 
-            this.btnAdd.Location = new System.Drawing.Point(39, 302);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(75, 23);
-            this.btnAdd.TabIndex = 0;
-            this.btnAdd.Text = "Add";
-            this.btnAdd.UseVisualStyleBackColor = true;
+            this.monthCalendar1.Location = new System.Drawing.Point(319, 66);
+            this.monthCalendar1.Name = "monthCalendar1";
+            this.monthCalendar1.TabIndex = 0;
             // 
-            // btnCancel
+            // mySqlCommand1
             // 
-            this.btnCancel.Location = new System.Drawing.Point(376, 302);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 1;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
+            this.mySqlCommand1.CommandTimeout = 0;
+            this.mySqlCommand1.Connection = null;
+            this.mySqlCommand1.Transaction = null;
+            this.mySqlCommand1.UpdatedRowSource = System.Data.UpdateRowSource.None;
             // 
-            // btnDelete
+            // appointmentsDGV
             // 
-            this.btnDelete.Location = new System.Drawing.Point(269, 302);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 23);
-            this.btnDelete.TabIndex = 2;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            // 
-            // btnModify
-            // 
-            this.btnModify.Location = new System.Drawing.Point(155, 302);
-            this.btnModify.Name = "btnModify";
-            this.btnModify.Size = new System.Drawing.Size(75, 23);
-            this.btnModify.TabIndex = 3;
-            this.btnModify.Text = "Modify";
-            this.btnModify.UseVisualStyleBackColor = true;
-            // 
-            // appointmentMonth
-            // 
-            this.appointmentMonth.Location = new System.Drawing.Point(273, 50);
-            this.appointmentMonth.Name = "appointmentMonth";
-            this.appointmentMonth.TabIndex = 4;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 50);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(249, 162);
-            this.dataGridView1.TabIndex = 5;
+            this.appointmentsDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.appointmentsDGV.Location = new System.Drawing.Point(12, 66);
+            this.appointmentsDGV.Name = "appointmentsDGV";
+            this.appointmentsDGV.Size = new System.Drawing.Size(295, 162);
+            this.appointmentsDGV.TabIndex = 1;
             // 
             // btnWeek
             // 
-            this.btnWeek.Location = new System.Drawing.Point(12, 12);
+            this.btnWeek.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.btnWeek.Location = new System.Drawing.Point(22, 21);
             this.btnWeek.Name = "btnWeek";
-            this.btnWeek.Size = new System.Drawing.Size(75, 23);
-            this.btnWeek.TabIndex = 6;
+            this.btnWeek.Size = new System.Drawing.Size(81, 39);
+            this.btnWeek.TabIndex = 2;
             this.btnWeek.Text = "Week";
-            this.btnWeek.UseVisualStyleBackColor = true;
+            this.btnWeek.UseVisualStyleBackColor = false;
             // 
             // btnMonth
             // 
-            this.btnMonth.Location = new System.Drawing.Point(93, 12);
+            this.btnMonth.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.btnMonth.Location = new System.Drawing.Point(132, 21);
             this.btnMonth.Name = "btnMonth";
-            this.btnMonth.Size = new System.Drawing.Size(75, 23);
-            this.btnMonth.TabIndex = 7;
+            this.btnMonth.Size = new System.Drawing.Size(81, 39);
+            this.btnMonth.TabIndex = 3;
             this.btnMonth.Text = "Month";
-            this.btnMonth.UseVisualStyleBackColor = true;
+            this.btnMonth.UseVisualStyleBackColor = false;
             // 
-            // btnMonthlyReport
+            // btnAdd
             // 
-            this.btnMonthlyReport.Location = new System.Drawing.Point(39, 234);
-            this.btnMonthlyReport.Name = "btnMonthlyReport";
-            this.btnMonthlyReport.Size = new System.Drawing.Size(91, 39);
-            this.btnMonthlyReport.TabIndex = 8;
-            this.btnMonthlyReport.Text = "Monthly Reports";
-            this.btnMonthlyReport.UseVisualStyleBackColor = true;
+            this.btnAdd.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.btnAdd.Location = new System.Drawing.Point(12, 234);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(148, 53);
+            this.btnAdd.TabIndex = 6;
+            this.btnAdd.Text = "Add";
+            this.btnAdd.UseVisualStyleBackColor = false;
             // 
-            // btnUserSchedules
+            // btnAddModify
             // 
-            this.btnUserSchedules.Location = new System.Drawing.Point(200, 234);
-            this.btnUserSchedules.Name = "btnUserSchedules";
-            this.btnUserSchedules.Size = new System.Drawing.Size(91, 39);
-            this.btnUserSchedules.TabIndex = 9;
-            this.btnUserSchedules.Text = "User Schedules";
-            this.btnUserSchedules.UseVisualStyleBackColor = true;
+            this.btnAddModify.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.btnAddModify.Location = new System.Drawing.Point(189, 248);
+            this.btnAddModify.Name = "btnAddModify";
+            this.btnAddModify.Size = new System.Drawing.Size(81, 39);
+            this.btnAddModify.TabIndex = 7;
+            this.btnAddModify.Text = "Modify";
+            this.btnAddModify.UseVisualStyleBackColor = false;
+            this.btnAddModify.Click += new System.EventHandler(this.btnAddModify_Click);
             // 
-            // btnCustomersandAppts
+            // btnCancel
             // 
-            this.btnCustomersandAppts.Location = new System.Drawing.Point(360, 234);
-            this.btnCustomersandAppts.Name = "btnCustomersandAppts";
-            this.btnCustomersandAppts.Size = new System.Drawing.Size(91, 39);
-            this.btnCustomersandAppts.TabIndex = 10;
-            this.btnCustomersandAppts.Text = "Customers and Appointments";
-            this.btnCustomersandAppts.UseVisualStyleBackColor = true;
+            this.btnCancel.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.btnCancel.Location = new System.Drawing.Point(363, 248);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(81, 39);
+            this.btnCancel.TabIndex = 8;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = false;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.btnDelete.Location = new System.Drawing.Point(276, 248);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(81, 39);
+            this.btnDelete.TabIndex = 9;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = false;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnConn
+            // 
+            this.btnConn.Location = new System.Drawing.Point(406, 12);
+            this.btnConn.Name = "btnConn";
+            this.btnConn.Size = new System.Drawing.Size(75, 33);
+            this.btnConn.TabIndex = 10;
+            this.btnConn.Text = "Connection Checker";
+            this.btnConn.UseVisualStyleBackColor = true;
             // 
             // Appointments
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(528, 337);
-            this.Controls.Add(this.btnCustomersandAppts);
-            this.Controls.Add(this.btnUserSchedules);
-            this.Controls.Add(this.btnMonthlyReport);
-            this.Controls.Add(this.btnMonth);
-            this.Controls.Add(this.btnWeek);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.appointmentMonth);
-            this.Controls.Add(this.btnModify);
+            this.BackColor = System.Drawing.SystemColors.Window;
+            this.ClientSize = new System.Drawing.Size(557, 450);
+            this.Controls.Add(this.btnConn);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnAddModify);
             this.Controls.Add(this.btnAdd);
+            this.Controls.Add(this.btnMonth);
+            this.Controls.Add(this.btnWeek);
+            this.Controls.Add(this.appointmentsDGV);
+            this.Controls.Add(this.monthCalendar1);
             this.Name = "Appointments";
-            this.Text = "Appointment";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.Text = "Appointments";
+            this.Load += new System.EventHandler(this.Appointments_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.appointmentsDGV)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.Button btnModify;
-        private System.Windows.Forms.MonthCalendar appointmentMonth;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.MonthCalendar monthCalendar1;
+        private MySqlConnector.MySqlCommand mySqlCommand1;
+        private System.Windows.Forms.DataGridView appointmentsDGV;
         private System.Windows.Forms.Button btnWeek;
         private System.Windows.Forms.Button btnMonth;
-        private System.Windows.Forms.Button btnMonthlyReport;
-        private System.Windows.Forms.Button btnUserSchedules;
-        private System.Windows.Forms.Button btnCustomersandAppts;
+        private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.Button btnAddModify;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Button btnConn;
     }
 }

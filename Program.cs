@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SchedulingApplication
+namespace Scheduling_Appointment
 {
     static class Program
     {
@@ -16,9 +16,9 @@ namespace SchedulingApplication
         { 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            DBConnection.startConnection();
+            DBconnection.startConnection();
             Application.Run(new LogIn());
-            DBConnection.closeConnection();
+            DBconnection.closeConnection();
         }
     }
 }
