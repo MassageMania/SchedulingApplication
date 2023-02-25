@@ -25,7 +25,6 @@ namespace Scheduling_Appointment
             //Language check here.
             if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "fr")
             {
-                lblRegion.Text = ("Region");
                 lblPassword.Text = ("Mot de passe ");
                 lblUsername.Text = ("Nom d'utiliasateur");
                 btnLogIn.Text = ("S'identifier");
@@ -35,7 +34,6 @@ namespace Scheduling_Appointment
 
         private void LoginToFrench()
         {
-            lblRegion.Text = ("Region");
             lblPassword.Text = ("Mot de passe ");
             lblUsername.Text = ("Nom d'utiliasateur");
             btnLogIn.Text = ("S'identifier");
@@ -78,10 +76,9 @@ namespace Scheduling_Appointment
             {
                 if (FindUser(tbUsername.Text, tbPassword.Text) !=0)
                 {
-                    var MainMenu = new MainMenu();
-                    MainMenu.Show();
-                    this.Hide();
-
+                    var appointments = new Appointments();
+                    appointments.Show();
+                    Hide();
 
 
                     //if (culture == "FR")
@@ -109,7 +106,7 @@ namespace Scheduling_Appointment
 
             catch (LoginException error)
             {
-                lblError.Text = error.Message;
+                //lblError.Text = error.Message;
             }
         }
         private void btnCancel_Click(object sender, EventArgs e)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace Scheduling_Appointment
 {
     public class Appointment
     {
+        //public const int IDCODE_IDX = 0;
         public int AppointmentId { get; set; }
         public int CustomerId { get; set; }
         public int UserId { get; set; }
@@ -19,15 +21,18 @@ namespace Scheduling_Appointment
         public DateTime LastUpdated { get; set; }
         public string LastUpdatedBy { get; set; }
 
-        private static int count = 0;
+       // public static BindingList<Appointment> appointments = new BindingList<Appointment>();
+        
+        //See Address.cs for list DGV stuff
+        public static List<Appointment> appointment = new List<Appointment>();
+        public static List<Appointment> AppointmentProperty { get { return appointment; } }
+
+        //public static BindingList<Address> = new BindingList<Address>;
+
 
         public Appointment(int appointmentId, int customerId, int userId, string type, DateTime start, DateTime end, DateTime createDate, string createdBy, DateTime lastUpdated, string lastUpdatedBy)
         {
             AppointmentId = appointmentId;
-            if (appointmentId > count)
-            {
-                count += appointmentId;
-            }
             CustomerId = customerId;
             UserId = userId;
             Type = type;

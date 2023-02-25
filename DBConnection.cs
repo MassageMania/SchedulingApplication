@@ -12,6 +12,7 @@ namespace Scheduling_Appointment
 {
     public class DBconnection
     {
+        public static string connectionString = "Server=localhost;Port=3306;Username=sqlUser;Password=Password!;Database=client_schedule";
 
         public static MySqlConnection conn { get; set; }
 
@@ -110,33 +111,42 @@ namespace Scheduling_Appointment
                 DateTime lastUpdate = Convert.ToDateTime(dataReader[13]).ToLocalTime();
                 string lastUpdatedBy = dataReader[14].ToString();
 
-               // MainMenu.ListOfAppointments.Add(new Appointment(appointmentId, customerId, userId, type, start, end, createDate, createdBy, lastUpdate, lastUpdatedBy));
             }
         }
+        //Todo write as bool 
+        public static int overlapAppointment(DateTime start, DateTime end)
+        {
+            //var startDateTime = ;
+            //var endDateTime = ;
+            var query = @"SELECT count(*) FROM appointment 
+                        WHERE (('@startDateTime' > start 
+                        AND '@startDateTime' < end) 
+                        OR ('@endDateTime'> start 
+                        AND ''@endDateTime' < end)) 
+                        AND end > now() order by start limit 1;";
 
-        public static void addAppointment(int customerId, string type, DateTime start, DateTime end)
+            MySqlCommand command = new MySqlCommand(query, conn);
+            MySqlDataReader dataReader = command.ExecuteReader();
+
+            if (dataReader.HasRows)
+            {
+                dataReader.Read();
+                string count = dataReader[0].ToString();
+                int result = count == "0" ? 0 : 1;
+                return result;
+            }
+            return 0;
+        }
+
+
+
+        public static void addAppointment(int customerId, string location, string type, DateTime start, DateTime end)
         {
             DateTime now = DateTime.Now;
-            /*var addAppointment = new Appointment(customerId, MainMenu.LoggedInUser.UserID, type, start, end, now, MainMenu.LoggedInUser.UserName, now, MainMenu.LoggedInUser.UserName);
-            string query = $"INSERT INTO ' appointment' VALUES 
-                $"({addAppointment.AppointmentId}, " +
-                $"{customerId}, " +
-                $"{MainMenu.LoggedInUser.UserID}, " +
-                $"'not needed', " +
-                $"'not needed', " +
-                $"'not needed', " +
-                $"'not needed', " +
-                $"'{type}', " +
-                $"'not needed', " +
-                $"'{start.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo)}', " +
-                $"'{end.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo)}', " +
-                $"'{createDate.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo)}', " +
-                $"'{MainMenu.LoggedInUser.UserName}" +
-                $"'{addAppointment.LastUpdated.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo)}', " +
-                $"'{MainMenu.LoggedInUser.UserName}')"; */
+           
 
             string query = @"INSERT INTO appointment VALUES(NULL, @customerId, @userId, 
-                            'not needed', 'not needed', 'not needed', 'not needed', @type, 'not needed',
+                            @location, 'not needed', 'not needed', 'not needed', @type, 'not needed',
                             @start, @end, Now(), 'user', Now(), 'user')";
 
 
@@ -144,16 +154,16 @@ namespace Scheduling_Appointment
             MySqlCommand cmd = new MySqlCommand(query, conn);
 
             cmd.Parameters.AddWithValue("customerId", customerId);
-            cmd.Parameters.AddWithValue("userId", MainMenu.LoggedInUser.UserID);
+            cmd.Parameters.AddWithValue("userId", DBconnection.GetUserName());
+            cmd.Parameters.AddWithValue("location", location);
             cmd.Parameters.AddWithValue("type", type);
             cmd.Parameters.AddWithValue("start", start);
             cmd.Parameters.AddWithValue("end", end);
-            cmd.Parameters.AddWithValue("user", MainMenu.LoggedInUser.UserName);
-            cmd.Parameters.AddWithValue("user", MainMenu.LoggedInUser.UserName);
+            cmd.Parameters.AddWithValue("user", DBconnection.GetUserName());
+            cmd.Parameters.AddWithValue("user", DBconnection.GetUserName());
 
             cmd.ExecuteNonQuery();
 
-            //MainMenu.ListOfAppointments.Add(addAppointment);
         }
 
         public static void deleteAppointment(Appointment appointment)
@@ -161,28 +171,25 @@ namespace Scheduling_Appointment
             string query = $"DELETE FROM appointment WHERE appointmentId={appointment.AppointmentId};";
             MySqlCommand cmd = new MySqlCommand(query, conn);
             cmd.ExecuteNonQuery();
-            //MainMenu.ListOfAppointments.Remove(appointment);
         }
 
-        public static void updateAppointment(Appointment appointment, int customerId, string type, DateTime start, DateTime end)
-        {
-            DateTime now = DateTime.Now;
-            string nowString = now.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
-            string query = $"UPDATE appointment SET customerId = {customerId}, " +
-                $"userId={MainMenu.LoggedInUser.UserID}, type= '{type}', " +
-                $"start'{start.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo)}', " +
-                $"end='{end.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo)}, " +
-                $"lastUpdated = '{nowString}', " +
-                $"lastUpdateBy='{MainMenu.LoggedInUser.UserName}" +
-                $"WHERE appointmentId={appointment.AppointmentId};";
-            MySqlCommand cmd = new MySqlCommand(query, conn);
-            cmd.ExecuteNonQuery();
+        //public static void updateAppointment(Appointment appointment, int customerId, string type, DateTime start, DateTime end)
+        //{
+        //    DateTime now = DateTime.Now;
+        //    string nowString = now.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
+        //    string query = $"UPDATE appointment SET customerId = {customerId}, " +
+        //        $"userId={MainMenu.LoggedInUser.UserID}, type= '{type}', " +
+        //        $"start'{start.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo)}', " +
+        //        $"end='{end.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo)}, " +
+        //        $"lastUpdated = '{nowString}', " +
+        //        $"lastUpdateBy='{MainMenu.LoggedInUser.UserName}" +
+        //        $"WHERE appointmentId={appointment.AppointmentId};";
+        //    MySqlCommand cmd = new MySqlCommand(query, conn);
+        //    cmd.ExecuteNonQuery();
 
-            Appointment updateAppointment = new Appointment(appointment.AppointmentId, customerId, MainMenu.LoggedInUser.UserID, type, start, end, appointment.CreateDate, appointment.CreatedBy, now, MainMenu.LoggedInUser.UserName);
-            //int indexAppointmentList = MainMenu.ListOfAppointments.IndexOf(appointment);
-            //MainMenu.ListOfAppointments.RemoveAt(indexAppointmentList);
-            //MainMenu.ListOfAppointments.Insert(indexAppointmentList, updateAppointment);
-        }
+        //    Appointment updateAppointment = new Appointment(appointment.AppointmentId, customerId, MainMenu.LoggedInUser.UserID, type, start, end, appointment.CreateDate, appointment.CreatedBy, now, MainMenu.LoggedInUser.UserName);
+            
+        //}
 
         public static void getCustomer()
         {
@@ -201,25 +208,13 @@ namespace Scheduling_Appointment
                 DateTime lastUpdated = Convert.ToDateTime(dataReader[6]).ToLocalTime();
                 string lastUpdatedBy = dataReader[7].ToString();
 
-               //MainMenu.ListOfCustomers.Add(new Customer(customerId, customerName, addressId, active, createDate, createdBy, lastUpdated, lastUpdatedBy));
             }
         }
 
         public static int addCustomer(int customerId, string customerName, int addressId, string user)
         {
             DateTime now = DateTime.Now;
-           // var addedCustomer = new Customer(customerId,customerName, addressId, 1, now, user, now, user);
-            //Hey Harlan
-            /*string query = $"INSERT INTO 'customer' VALUES " +
-                $"({addedCustomer.CustomerId}, " +
-                $"'{addedCustomer.CustomerName}', " +
-                $"{addedCustomer.AddressId}, " +
-                $"{addedCustomer.Active}, " +
-                $"'{addedCustomer.CreateDate.ToUniversalTime().ToString("yy-<<-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo)}', " +
-                $"'{addedCustomer.CreatedBy}', " +
-                $"'{addedCustomer.LastUpdated.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo)}', " +
-                $"'{addedCustomer.LastUpdateBy}')";
-            */
+           
             string query = @"INSERT INTO customer VALUES(NULL, @customerId, @customerName, 
                             @addressId, @active, Now(), @user, Now(), @user";
 
@@ -231,10 +226,9 @@ namespace Scheduling_Appointment
             cmd.Parameters.AddWithValue("customerName", customerName);
             cmd.Parameters.AddWithValue("addressId", addressId);
             cmd.Parameters.AddWithValue("active", 1);
-            cmd.Parameters.AddWithValue("user", MainMenu.LoggedInUser.UserName);
-            cmd.Parameters.AddWithValue("user", MainMenu.LoggedInUser.UserName);
+            cmd.Parameters.AddWithValue("user", DBconnection.GetUserName());
+            cmd.Parameters.AddWithValue("user", DBconnection.GetUserName());
 
-            //MainMenu.ListOfCustomers.Add(addedCustomer);
             //Todo Fix return type
             return 0;
         }
@@ -244,7 +238,6 @@ namespace Scheduling_Appointment
             string query = $"DELETE FROM customer WHERE customerId={customer.CustomerId};";
             MySqlCommand cmd = new MySqlCommand(query, conn);
             cmd.ExecuteNonQuery();
-            //MainMenu.ListOfCustomers.Remove(customer);
             deleteAddress(customer.AddressId);
         }
 
@@ -257,27 +250,14 @@ namespace Scheduling_Appointment
             cmd.ExecuteNonQuery();
 
             Customer updateCustomer = new Customer(customer.CustomerId, customerName, customer.AddressId, customer.Active, customer.CreateDate, customer.CreatedBy, now, user);
-            //int indexCustomerList = MainMenu.ListOfCustomers.IndexOf(customer);
-            //MainMenu.ListOfCustomers.RemoveAt(indexCustomerList);
-            //MainMenu.ListOfCustomers.Insert(indexCustomerList, updateCustomer);
+  
         }
 
         public static int AddAddress(string address1, string address2, int cityId, string postalCode, string phone, DateTime createDate, string createdBy, DateTime lastUpdate
             , string lastUpdateBy)
         {
             DateTime now = DateTime.Now;
-            //Address addAddress = new Address(address1, address2, cityId, postalCode, phone, now, userName, now, userName);
-            /*string query = $"INSERT INTO address VALUES" +
-                $"({addAddress.AddressId}, " +
-                $"{addAddress.Address1}, " +
-                $"{addAddress.Address2}, " +
-                $"{addAddress.CityId}, " +
-                $"{addAddress.PostalCode}, " +
-                $"{addAddress.Phone}, " +
-                $"{addAddress.CreateDate.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo)}, " +
-                $"{addAddress.CreatedBy}, " +
-                $"{addAddress.LastUpdated.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo)}, " +
-                $"{addAddress.LastUpdateBy})"; */
+           
             string query = @"INSERT INTO address VALUES(NULL, @address1, @address2, 
                             @cityId, @postalCode, @phone, Now(), @user, Now(), @user";
 
@@ -290,12 +270,11 @@ namespace Scheduling_Appointment
             cmd.Parameters.AddWithValue("cityId", cityId);
             cmd.Parameters.AddWithValue("postalCode", postalCode);
             cmd.Parameters.AddWithValue("phone", phone);
-            cmd.Parameters.AddWithValue("user", MainMenu.LoggedInUser.UserName);
-            cmd.Parameters.AddWithValue("user", MainMenu.LoggedInUser.UserName);
+            cmd.Parameters.AddWithValue("user", DBconnection.GetUserName());
+            cmd.Parameters.AddWithValue("user", DBconnection.GetUserName());
 
             cmd.ExecuteNonQuery();
 
-            //MainMenu.AddressDictionary.Add(addAddress.AddressId, addAddress);
             //Todo fix return type
             return 0;
         }
@@ -319,7 +298,6 @@ namespace Scheduling_Appointment
                 DateTime lastUpdate = Convert.ToDateTime(dataReader[8]).ToLocalTime();
                 string lastUpdatedBy = dataReader[9].ToString();
 
-                //MainMenu.AddressDictionary.Add(addressId, new Address(addressId, address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdatedBy));
             }
         }
 
@@ -330,7 +308,6 @@ namespace Scheduling_Appointment
             string query = $"DELETE FROM address WHERE addressId = {addressId};";
             MySqlCommand cmd = new MySqlCommand(query, conn);
             cmd.ExecuteNonQuery();
-            //MainMenu.AddressDictionary.Remove(addressId);
         }
 
         public static void upDateAddress(Address address, string address1, string address2, int cityId, string postalCode, string phone, string user)
@@ -358,7 +335,6 @@ namespace Scheduling_Appointment
                 DateTime lastUpdated = Convert.ToDateTime(dataReader[5]).ToLocalTime();
                 string lastUpdatedBy = dataReader[6].ToString();
 
-               // MainMenu.CityDictionary.Add(cityId, new City(cityId, city, countryId, createDate, createdBy, lastUpdated, lastUpdatedBy));
             }
         }
 
@@ -377,7 +353,6 @@ namespace Scheduling_Appointment
                 DateTime lastUpdated = Convert.ToDateTime(dataReader[4]).ToLocalTime();
                 string lastUpdatedBy = dataReader[5].ToString();
 
-                //MainMenu.CountryDictionary.Add(countryId, new Country(countryId, country, createDate, createdBy, lastUpdated, lastUpdatedBy));
             }
         }
 

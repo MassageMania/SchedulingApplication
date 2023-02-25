@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace SchedulingApplication
 {
-    public partial class CustomerForm : Form
+    public partial class ModifyAppointments : Form
     {
-        public CustomerForm()
+        public ModifyAppointments()
         {
             InitializeComponent();
         }

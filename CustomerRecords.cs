@@ -1,4 +1,5 @@
 ﻿using System;
+using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,59 +11,40 @@ using System.Windows.Forms;
 
 namespace Scheduling_Appointment
 {
-    public partial class CustomerRecords : Form
+    public partial class CustomerRecordsForm : Form
     {
-        public CustomerRecords()
+        DataTable dtCustomerRecords = new DataTable();
+        public CustomerRecordsForm()
         {
             InitializeComponent();
         }
 
         //private void customerrecords_load(object sender, eventargs e)
         //{
-            //dictionary<int, string> countrynamedictionary = mainmenu.countrydictionary.todictionary(dict => dict.key, dict => dict.value.countryname);
-            //cbcountry.datasource = new bindingsource(countrynamedictionary, null);
-            //cbcountry.displaymember = "value";
-            //cbcountry.valuemember = "key";
-            //cbcountry.selecteditem = null;
-            //dictionary<int, string> citynamedictionary = mainmenu.citydictionary.todictionary(dict => dict.key, dict => dict.value.cityname);
-            //cbcountry.datasource = new bindingsource(countrynamedictionary, null);
-            //cbcountry.displaymember = "value";
-            //cbcountry.valuemember = "key";
-            //cbcountry.selecteditem = null;
+        //dictionary<int, string> countrynamedictionary = mainmenu.countrydictionary.todictionary(dict => dict.key, dict => dict.value.countryname);
+        //cbcountry.datasource = new bindingsource(countrynamedictionary, null);
+        //cbcountry.displaymember = "value";
+        //cbcountry.valuemember = "key";
+        //cbcountry.selecteditem = null;
+        //dictionary<int, string> citynamedictionary = mainmenu.citydictionary.todictionary(dict => dict.key, dict => dict.value.cityname);
+        //cbcountry.datasource = new bindingsource(countrynamedictionary, null);
+        //cbcountry.displaymember = "value";
+        //cbcountry.valuemember = "key";
+        //cbcountry.selecteditem = null;
 
         //}
 
-        private void cbCountry_SelectionChangeCommitted(object sender, EventArgs e)
+        public DataTable GetAllCustomers()
         {
-            //var selectedCountryKey = Convert.ToInt32(cbCountry.SelectedValue);
-            //var newCityNameDictionary = MainMenu.CityDictionary.Where(dict => dict.Value.CountryID == selectedCountryKey).ToDictionary(dict => dict.Key, dict => dict.Value.CityName);
-            //cbCity.DataSource = new BindingSource(newCityNameDictionary, null);
-            //cbCity.DisplayMember = "Value";
-            //cbCity.ValueMember = "Key";
-            //cbCity.SelectedItem = null;
+            DataTable customerRecords = new DataTable();
+            string getCustomers = "SELECT  * from customer";
+            MySqlCommand sqlCommand = new MySqlCommand(getCustomers, DBconnection.conn);
+
+            MySqlDataAdapter sqlDataAdapter = new MySqlDataAdapter(sqlCommand);
+            sqlDataAdapter.Fill(customerRecords);
+            return customerRecords;
         }
-
-        private void cbCity_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            if (cbCountry.Text == "")
-            {
-                var selectedCityKey = cbCity.SelectedValue;
-                //int selectedCountryKey = MainMenu.CityDictionary[Convert.ToInt32(selectedCityKey)].CountryID;
-                //cbCountry.Text = MainMenu.CountryDictionary[selectedCountryKey].CountryName;
-            }
-
-        }
-
-        private void cbCity_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            e.Handled = true;
-        }
-
-        private void cbCountry_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            e.Handled = true;
-        }
-
+      
         private void customerRecordsDGV_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             var dataGridView = customerRecordsDGV;
@@ -87,6 +69,11 @@ namespace Scheduling_Appointment
 
         }
 
+        private void btnBack_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        
     }
 }

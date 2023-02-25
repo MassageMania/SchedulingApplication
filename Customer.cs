@@ -16,13 +16,13 @@ namespace Scheduling_Appointment
         public string CreatedBy { get; set; }
         public DateTime LastUpdated { get; set; }
         public string LastUpdateBy { get; set; }
-
-        public static int count = 0;
+        //See Address.cs for list DGV stuff
+        public static List<Customer> customer = new List<Customer>();
+        public static List<Customer> CustomerProperty { get { return customer; } }
 
         public Customer(int customerId, string customerName, int addressId, byte active, DateTime createDate, string createdBy, DateTime lastUpdated, string lastUpdateBy)
         {
             CustomerId = customerId;
-            count = customerId;
             CustomerName = customerName;
             AddressId = addressId;
             Active = active;

@@ -116,12 +116,6 @@
     <Compile Include="Country.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="DBConnection.cs" />
-    <Compile Include="CustomerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CustomerForm.Designer.cs">
-      <DependentUpon>CustomerForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="CustomerRecords.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,17 +129,17 @@
       <DependentUpon>DeleteAppointment.cs</DependentUpon>
     </Compile>
     <Compile Include="LoginException.cs" />
-    <Compile Include="MainMenu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainMenu.Designer.cs">
-      <DependentUpon>MainMenu.cs</DependentUpon>
-    </Compile>
     <Compile Include="Log In.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Log In.Designer.cs">
       <DependentUpon>Log In.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModifyAppointments.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModifyAppointments.Designer.cs">
+      <DependentUpon>ModifyAppointments.cs</DependentUpon>
     </Compile>
     <Compile Include="MonthlyAppointments.cs">
       <SubType>Form</SubType>
@@ -163,20 +157,17 @@
     <EmbeddedResource Include="AddAppointments.resx">
       <DependentUpon>AddAppointments.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomerForm.resx">
-      <DependentUpon>CustomerForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="CustomerRecords.resx">
       <DependentUpon>CustomerRecords.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DeleteAppointment.resx">
       <DependentUpon>DeleteAppointment.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainMenu.resx">
-      <DependentUpon>MainMenu.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Log In.resx">
       <DependentUpon>Log In.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModifyAppointments.resx">
+      <DependentUpon>ModifyAppointments.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MonthlyAppointments.resx">
       <DependentUpon>MonthlyAppointments.cs</DependentUpon>

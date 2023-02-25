@@ -17,6 +17,7 @@ namespace Scheduling_Appointment
         public string LastUpdateBy { get; set; }
 
         static public List<Country> Countries = new List<Country>();
+        public static List<Country> CountryProperty { get { return Countries; } }
 
         //static public int countryId;
         public Country(int countryId, string countryName, DateTime createDate, string createdBy, DateTime lastUpdate, string lastUpdateBy)

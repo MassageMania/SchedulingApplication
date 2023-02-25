@@ -15,84 +15,46 @@ namespace Scheduling_Appointment
 {
     public partial class Appointments : Form
     {
-        private DateTime SelectedDate;
+        DateTime currentDate;
         private bool monthSelected = true;
+        DataTable allAppointments = new DataTable();
 
-        private void Appointments_Load(object sender, EventArgs e)
-        {
-            //appointmentsDGV.DataSource = getAppointmentInTimePeriod(new DateTime(SelectedDate.Year, SelectedDate.Month, SelectedDate.Day), new DateTime(SelectedDate.Year, SelectedDate.Month, SelectedDate.Day + 1));
-        }
 
         public Appointments()
         {
             InitializeComponent();
-            SelectedDate = DateTime.Now;
+            currentDate = DateTime.Now;
+
+
+            // Mark Kinkaid Sword and shield - Sword DGV
+            appointmentsDGV.DataSource = GetAllAppointments();
+            appointmentsDGV.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            appointmentsDGV.ReadOnly = true;
+            appointmentsDGV.MultiSelect = false;
+            appointmentsDGV.AllowUserToAddRows = false;
+            
         }
 
-        //private BindingList<Appointment> getAppointmentInTimePeriod(DateTime beginTime, DateTime endTime)
-        //{
-            //Lambda used in Linq Statement to recreat List of Appointments that fall within the beginning and end time  bounds.
-            //return new BindingList<Appointment>(MainMenu.ListOfAppointments.Where(appt => appt.Start >= beginTime && appt.End <= endTime).ToList());
-        //}
-
-        //private BindingList<Appointment> getAppointmentByCustomerId(int id)
-        //{  //Returns Appointment List for DGV via CustomerID
-           //return new BindingList<Appointment>(MainMenu.ListOfAppointments.Where(getAppointmentInTimePeriod => getAppointmentInTimePeriod.CustomerId == id).ToList());
-        //}
-
-        private DateTime findBeginningOfWeek(DateTime date)
+        public DataTable GetAllAppointments()
         {
-            var culture = Thread.CurrentThread.CurrentCulture;
-            var difference = date.DayOfWeek - culture.DateTimeFormat.FirstDayOfWeek;
-            if (difference < 0)
+            allAppointments = new DataTable();
+            string getAppointments = "SELECT * from Appointment";
+            MySqlCommand sqlCommand = new MySqlCommand(getAppointments, DBconnection.conn);
+
+            MySqlDataAdapter sqlDataAdapter = new MySqlDataAdapter(sqlCommand);
+            sqlDataAdapter.Fill(allAppointments);
+            return allAppointments;
+        }
+
+        private void getData(string s)
+        {
+            using (MySqlConnection connection = new MySqlConnection(DBconnection.connectionString))
             {
-                difference = difference + 7;
+                MySqlCommand command = new MySqlCommand(s, connection);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+                adapter.Fill(allAppointments);
             }
-            return date.AddDays(-difference).Date;
         }
-
-        private DateTime findEndOfWeek(DateTime date)
-        {
-            return findBeginningOfWeek(date).AddDays(7).AddMilliseconds(-1);
-        }
-
-        private DateTime findBeginningOfMonth(DateTime date)
-        {
-            return new DateTime(date.Year, date.Month, 1);
-        }
-
-        private DateTime findEndOfMonth(DateTime date)
-        {
-            return findBeginningOfMonth(date).AddMonths(1).AddMilliseconds(-1);
-        }
-
-        //private void btnMonth_Click(object sender, EventArgs e)
-        //{
-        //    monthSelected = true;
-        //    UpdateViewMonthlySelected();
-        //}
-        //private void UpdateViewMonthlySelected()
-        //{
-        //    DateTime beginningOfMonth = findBeginningOfMonth(SelectedDate);
-        //    DateTime endOfMonth = findEndOfMonth(SelectedDate);
-        //    appointmentsDGV.DataSource = getAppointmentInTimePeriod(beginningOfMonth, endOfMonth);
-        //}
-
-        //private void btnWeek_Click(object sender, EventArgs e)
-        //{
-        //    monthSelected = false;
-        //    UpdateViewWeeklySelected();
-        //}
-        //private void UpdateViewWeeklySelected()
-        //{
-        //    DateTime beginningOfWeek = findBeginningOfWeek(SelectedDate);
-        //    DateTime endOfWeek = findEndOfWeek(SelectedDate);
-        //    appointmentsDGV.DataSource = getAppointmentInTimePeriod(beginningOfWeek, endOfWeek);
-        //}
-        //private void UpdateViewSearchId(int id)
-        //{
-        //    appointmentsDGV.DataSource = getAppointmentByCustomerId(id);
-        //}
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
@@ -121,30 +83,175 @@ namespace Scheduling_Appointment
             }
 
         }
+        public static void UpdateExistingAppointment(Appointment appointment)
+        {
 
+            try
+
+            {
+
+                string start = appointment.ApptStartTime.ToString("yyyy-MM-dd HH:mm:00");
+
+                string end = appointment.ApptEndTime.ToString("yyyy-MM-dd HH:mm:00");
+
+                //DatabaseConnection.activeConn.Open();
+
+                string cmdString = $@"UPDATE appointment SET customerId = {appointment.CustomerId}, userId = {appointment.UserId}, title = '{appointment.ApptTitle}', description = '{appointment.ApptDescription}',
+
+                                      location = '{appointment.Location}', contact = '{appointment.Contact}', type = '{appointment.Type}', url = '{appointment.ApptURL}', start = '{start}',
+
+                                      end = '{end}', lastUpdate = UTC_TIMESTAMP(), lastUpdateBy = '{appointment.LastUpdatedBy}'
+
+                                      WHERE appointmentId = {appointment.AppointmentID}";
+
+
+
+                MySqlCommand updateAppt = new MySqlCommand(cmdString, DatabaseConnection.activeConn);
+
+                updateAppt.ExecuteNonQuery();
+
+                //DatabaseConnection.activeConn.Close();
+
+
+
+                // clear the datatables to prevent appended duplicates
+
+                DBconnection.DT_ApptSchd.Clear();
+
+                DBconnection.DT_MonthlyApptSchd.Clear();
+
+                DBconnection.DT_WeeklyApptSchd.Clear();
+
+                DBconnection.DT_DailyApptSchd.Clear();
+
+
+
+                // refresh the datatables
+
+                DBconnection.GetApptSchd();
+
+                DBconnection.GetMonthlyApptSchd();
+
+                DBconnection.GetWeeklyApptSchd();
+
+                DBconnection.GetDailyApptSchd();
+
+            }
+
+
+
+            catch (MySqlException ex)
+
+            {
+
+                MessageBox.Show(ex.Message);
+
+                //DatabaseConnection.activeConn.Close();
+
+            }
+
+        }
         private void btnAddModify_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (appointmentsDGV.SelectedRows.Count < 1)
-                {
-                    throw new ApplicationException("You must select an appointment to edit.");
-                }
-                var selectRow = appointmentsDGV.SelectedRows[0];
-                int selectAppointmentId = Convert.ToInt32(selectRow.Cells[0].Value);
-                var editAppointment = new AddAppointments(this, selectAppointmentId);
-                editAppointment.Show();
-                appointmentsDGV.ClearSelection();
-                Hide();
-            }
-            catch (ApplicationException error)
-            {
-                MessageBox.Show(error.Message, "Instructions", MessageBoxButtons.OK);
-            }
-            catch (Exception err)
-            {
-                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
-            }
+
+
+            //try
+            //{
+            //    if (appointmentsDGV.SelectedRows.Count < 1)
+            //    {
+            //        throw new ApplicationException("You must select an appointment to edit.");
+            //    }
+            //    var selectRow = appointmentsDGV.SelectedRows[0];
+            //    int selectAppointmentId = Convert.ToInt32(selectRow.Cells[0].Value);
+            //    //var editAppointment = new AddAppointments(this, selectAppointmentId);
+            //    //editAppointment.Show();
+            //    appointmentsDGV.ClearSelection();
+            //    Hide();
+            //}
+            //catch (ApplicationException error)
+            //{
+            //    MessageBox.Show(error.Message, "Instructions", MessageBoxButtons.OK);
+            //}
+            //catch (Exception err)
+            //{
+            //    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+            //}
+        }
+
+        private void appointmentsDGV_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            appointmentsDGV.ClearSelection();
+        }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            //back
+        }
+
+        private void btnCustomerRecords_Click(object sender, EventArgs e)
+        {
+            var customerRecords = new CustomerRecordsForm();
+            customerRecords.Show();
+        }
+
+        private void btnReports_Click(object sender, EventArgs e)
+        {
+            //var formReports = new formReports();
+            //formReports.Show();
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            var addAppointments = new AddModAppointments();
+            addAppointments.Show();
+        }
+
+        private void btnAllAppointments_Click(object sender, EventArgs e)
+        {
+            appointmentsDGV.DataSource = GetAllAppointments();
+
+        }
+
+        private void btnWeek_Click(object sender, EventArgs e)
+        {            
+            var startDate = dtp.Value;
+            var endDate = dtp.Value.AddDays(7);
+            string getAppointments = @"SELECT * from Appointment 
+                                       WHERE userId = @userId 
+                                       AND start BETWEEN @startDate AND @endDate";
+
+            MySqlCommand sqlCommand = new MySqlCommand(getAppointments, DBconnection.conn);
+            sqlCommand.Parameters.AddWithValue("@userId", DBconnection.GetUserID());
+            sqlCommand.Parameters.AddWithValue("@startDate", startDate);
+            sqlCommand.Parameters.AddWithValue("@endDate", endDate);
+
+
+            MySqlDataAdapter sqlDataAdapter = new MySqlDataAdapter(sqlCommand);
+
+            sqlDataAdapter.Fill(allAppointments);
+            appointmentsDGV.DataSource = allAppointments;          
+
+        }
+
+        private void btnMonth_Click(object sender, EventArgs e)
+        {
+            var startDate = dtp.Value;
+            var endDate = dtp.Value.AddDays(30);
+            string getAppointments = @"SELECT * from Appointment 
+                                       WHERE userId = @userId 
+                                       AND start BETWEEN @startDate AND @endDate";
+
+            MySqlCommand sqlCommand = new MySqlCommand(getAppointments, DBconnection.conn);
+            sqlCommand.Parameters.AddWithValue("@userId", DBconnection.GetUserID());
+            sqlCommand.Parameters.AddWithValue("@startDate", startDate);
+            sqlCommand.Parameters.AddWithValue("@endDate", endDate);
+
+
+            MySqlDataAdapter sqlDataAdapter = new MySqlDataAdapter(sqlCommand);
+
+            sqlDataAdapter.Fill(allAppointments);
+            appointmentsDGV.DataSource = allAppointments;
+
         }
 
 

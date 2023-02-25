@@ -1,122 +1,177 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Scheduling_Appointment
 {
-    public partial class AddAppointments : Form
+    public partial class AddModAppointments : Form
     {
-        private Appointments PreviousApp;
-        private int SelectAppointmentId = -1;
-
-        public AddAppointments(Appointments previousApp, int appointmentId)
+        
+        public AddModAppointments()
         {
             InitializeComponent();
-            PreviousApp = previousApp;
-            SelectAppointmentId = appointmentId;
         }
 
-        private void AddAppointments_Load(object sender, EventArgs e)
+        private bool emptyCheck()
         {
-            //Dictionary<int, string> customerDictionary = MainMenu.ListOfCustomers.ToDictionary(list => list.CustomerId, list => list.CustomerName);
-            //cbCustomerName.DataSource = new BindingSource(customerDictionary, null);
-            //cbCustomerName.DisplayMember = "Value";
-            //cbCustomerName.ValueMember = "Key";
-            //cbCustomerName.SelectedItem = null;
-
-            //cbType.DataSource = new[] { "Scrum", "Presentation", "Lunch", "Interview", "Consultation", "Shareholder" };
-            //cbType.SelectedItem = null;
-
-            //if (SelectAppointmentId >= 0)
-            //{
-            //    Appointment appointment = MainMenu.ListOfAppointments.Where(appt => appt.AppointmentId == SelectAppointmentId).Single();
-            //    cbCustomerName.Text = customerDictionary[appointment.CustomerId];
-            //    cbType.Text = appointment.Type;
-            //    dtStart.Value = appointment.Start;
-            //    dtEnd.Value = appointment.End;
-            //}
-            //else
-            //{
-            //    DateTime now = DateTime.Now;
-            //    dtStart.Value = new DateTime(now.Year, now.Month, now.Day, 8, 0, 0);
-            //    dtEnd.Value = new DateTime(now.Year, now.Month, now.Day, 17, 0, 0);
-            //}
+            foreach (Control customer in Controls)
+            {
+                if (customer is TextBox)
+                {
+                    TextBox textBox = customer as TextBox;
+                    if (textBox.Text == string.Empty)
+                    {
+                        return false;
+                    }
+                }
+                if (customer is ComboBox)
+                {
+                    ComboBox combo = customer as ComboBox;
+                    if (combo.SelectedIndex == -1)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
+
+
+        public bool appointmentValidator(DateTime startTime, DateTime endTime)
+        {
+            DateTime appointmentDate = dtpDate.Value;
+            DateTime localStart = startTime.ToLocalTime();
+            DateTime localEnd = endTime.ToLocalTime();
+            DateTime businessStart = DateTime.Today.AddHours(8); //8AM
+            DateTime businessEnd = DateTime.Today.AddHours(17); //5PM
+
+
+            bool startValid = false;
+
+            if 
+            (
+                localStart > localEnd
+                && dtpStart.Value.TimeOfDay >= businessStart.TimeOfDay
+                && dtpStart.Value.TimeOfDay < businessEnd.TimeOfDay)
+            {
+                startValid = true;
+            }
+
+            else if 
+            (
+                appointmentDate.Value.Date == DateTime.Now.Date
+                && dtpStart.Value.TimeOfDay > localEnd.TimeOfDay
+                && dtpStart.Value.TimeOfDay > businessStart.TimeOfDay
+                && dtpStart.Value.TimeOfDay < businessEnd.TimeOfDay)
+            {
+                startValid = true;
+            }
+            return startValid;
+            ////1 for outside business hours
+            //if (localStart.TimeOfDay < businessStart.TimeOfDay || localEnd.TimeOfDay > businessEnd.TimeOfDay)
+            //{
+            //    return 1;
+            //}
+            //// 2 for overlapping appointments
+            //if (DBconnection.overlapAppointment(startTime, endTime) != 0)
+            //{
+            //    return 2;
+            //}
+            ////3 for ending time before starting time
+            //if (localStart.TimeOfDay > localEnd.TimeOfDay)
+            //{
+            //    return 3;
+            //}
+            ////4 for appointment times not on the same day
+            //if (localStart.ToShortDateString() != localEnd.ToShortDateString())
+            //{
+            //    return 4;
+            //}
+            ////0 for pass
+            //return 0;
+        }
+
+        private void showError(string item)
+        {
+            MessageBox.Show("Please enter a valid information for " + item);
+
+        }
+
+        //Method to validate all fields are filled out
+        private bool validate()
+        {
+            if (emptyCheck() == false)
+            {
+                MessageBox.Show("Please fill out all fields.");
+                return false;
+            }
+            if (System.Text.RegularExpressions.Regex.IsMatch(tbLocation.Text, "[^a-zA-Z]+$"))
+            {
+                showError(lblLocation.Text);
+                return false;
+            }
+            if (System.Text.RegularExpressions.Regex.IsMatch(tbType.Text, "[^a-zA-Z]+$"))
+            {
+                showError(lblType.Text);
+                return false;
+            }
+
+            return true;
+        }
+
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            try
-            {
-                DateTime now = DateTime.Now;
-                TimeSpan businessStart = new DateTime(now.Year, now.Month, now.Day, 8, 0, 0).TimeOfDay;
-                TimeSpan businessEnd = new DateTime(now.Year, now.Month, now.Day, 17, 0, 0).TimeOfDay;
-                int selectCustomerId = Convert.ToInt32(cbCustomerName.SelectedValue);
-                string selectType = cbType.SelectedValue.ToString();
-                DateTime selectStart = dtStart.Value;
-                DateTime selectEnd = dtEnd.Value;
-                bool overlapping = false;
 
-                //foreach (var appt in MainMenu.ListOfAppointments)
-                //{
-                //    if (appt.Start <= selectStart && appt.End > selectStart && (!(SelectAppointmentId >= 0)) || SelectAppointmentId >= 0)
-                //    {
-                //        overlapping = true;
-                //    }
-                //    if (selectStart <= appt.Start && selectEnd > appt.Start && (!(SelectAppointmentId >= 0)) || SelectAppointmentId >= 0)
-                //    {
-                //        overlapping = true;
-                //    }
-                //}
-
-                if (SelectAppointmentId < 1)
-                {
-                    throw new ApplicationException("A customer must be selected.");
-                }
-                if (selectStart > selectEnd)
-                {
-                    throw new ApplicationException("Start time cannot be after end.");
-                }
-                if ((selectStart.TimeOfDay < businessStart) || (selectStart.TimeOfDay > businessEnd) || (selectEnd.TimeOfDay < businessStart) || (selectEnd.TimeOfDay > businessEnd))
-                {
-                    throw new ApplicationException("Appointments cannot be scheduled outside business hours.");
-                }
-                if (overlapping)
-                {
-                    throw new ApplicationException("Overlapping appopintments not acceptable.");
-                }
-                //if (SelectAppointmentId >= 0)
-                //{
-                //    Appointment appointment = MainMenu.ListOfAppointments.Where(appt => appt.AppointmentId == SelectAppointmentId).Single();
-                //    DBconnection.updateAppointment(appointment, selectCustomerId, selectType, selectStart, selectEnd);
-                //}
-                //else
-                //{
-                //    DBconnection.addAppointment(selectCustomerId, selectType, selectStart, selectEnd);
-                //}
-                Close();
-            }
-            catch (NullReferenceException)
+            bool pass = validate();
+            if (pass)
             {
-                MessageBox.Show("An appointment type must be selected.", "Instructions", MessageBoxButtons.OK);
-            }
-            catch (ApplicationException err)
-            {
-                MessageBox.Show(err.Message, "Instructions", MessageBoxButtons.OK);
-            }
-            catch (Exception err)
-            {
-                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
-            }
-        }
+                if (cbCustomerName.SelectedItem != null)
+                {
+                    DataRowView dataRowView = cbCustomerName.SelectedItem as DataRowView;
+                    int custID = Convert.ToInt32(cbCustomerName.SelectedValue);
 
-        private void btnModify_Click(object sender, EventArgs e)
-        {
+                    DateTime startTime = dtpStart.Value.ToUniversalTime();
+                    DateTime endTime = dtpEnd.Value.ToUniversalTime();
 
+                    int validate = appointmentValidator(startTime, endTime);
+
+                    switch (validate)
+                    {
+                        case 1:
+                            MessageBox.Show("This appointment isn't within business hours.");
+                            break;
+                        case 2:
+                            MessageBox.Show("This appointment conflict with another appointment.");
+                            break;
+                        case 3:
+                            MessageBox.Show("The appointments start time is after the end time.");
+                            break;
+                        case 4:
+                            MessageBox.Show("The start and end date are not on the same date.");
+                            break;
+                        default:
+                            DBconnection.addAppointment(custID, tbLocation.Text, tbType.Text, startTime, endTime);
+                            MessageBox.Show("Appointment has been added.");
+                            Hide();
+                            Appointments showAppointments = new Appointments();
+                            showAppointments.Closed += (s, args) => this.Close();
+                            showAppointments.Show();
+                            break;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please select a customer.");
+                }
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -124,19 +179,6 @@ namespace Scheduling_Appointment
             this.Close();
         }
 
-        private void AddAppointments_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            PreviousApp.Show();
-        }
-
-        private void cbCustomerName_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            e.Handled = true;
-        }
-
-        private void cbType_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            e.Handled = true;
-        }
+      
     }
 }

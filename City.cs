@@ -16,6 +16,9 @@ namespace Scheduling_Appointment
         public DateTime LastUpdated { get; set; }
         public string LastUpdateBy { get; set; }
 
+        public static List<City> city = new List<City>();
+        public static List<City> CityProperty { get { return city; } }
+
         public City(int cityId, string cityName, int countryId, DateTime createDate, string createdBy, DateTime lastUpdated, string lastUpdateBy)
         {
             CityID = cityId;

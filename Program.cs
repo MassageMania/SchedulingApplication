@@ -18,6 +18,7 @@ namespace Scheduling_Appointment
             Application.SetCompatibleTextRenderingDefault(false);
             DBconnection.startConnection();
             Application.Run(new LogIn());
+            Application.Exit();
             DBconnection.closeConnection();
         }
     }
