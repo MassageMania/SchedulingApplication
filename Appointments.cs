@@ -89,53 +89,33 @@ namespace Scheduling_Appointment
             try
 
             {
+                string start = appointment.Start.ToString("yyyy-MM-dd HH:mm:00");
+                string end = appointment.End.ToString("yyyy-MM-dd HH:mm:00");
+                //DBconnection.conn.Open();
+                string cmdString = @"UPDATE appointment SET customerId = appointment.CustomerId, userId = appointment.UserId, title = appointment.ApptTitle, description = appointment.ApptDescription,
 
-                string start = appointment.ApptStartTime.ToString("yyyy-MM-dd HH:mm:00");
+                                      location = appointment.Location, contact = appointment.Contact, type = appointment.Type, url = appointment.ApptURL, start = start,
 
-                string end = appointment.ApptEndTime.ToString("yyyy-MM-dd HH:mm:00");
+                                      end = end, lastUpdate = UTC_TIMESTAMP(), lastUpdateBy = appointment.LastUpdatedBy
 
-                //DatabaseConnection.activeConn.Open();
+                                      WHERE appointmentId = appointment.AppointmentID";
 
-                string cmdString = $@"UPDATE appointment SET customerId = {appointment.CustomerId}, userId = {appointment.UserId}, title = '{appointment.ApptTitle}', description = '{appointment.ApptDescription}',
-
-                                      location = '{appointment.Location}', contact = '{appointment.Contact}', type = '{appointment.Type}', url = '{appointment.ApptURL}', start = '{start}',
-
-                                      end = '{end}', lastUpdate = UTC_TIMESTAMP(), lastUpdateBy = '{appointment.LastUpdatedBy}'
-
-                                      WHERE appointmentId = {appointment.AppointmentID}";
-
-
-
-                MySqlCommand updateAppt = new MySqlCommand(cmdString, DatabaseConnection.activeConn);
-
+                MySqlCommand updateAppt = new MySqlCommand(cmdString, DBconnection.conn);
                 updateAppt.ExecuteNonQuery();
 
-                //DatabaseConnection.activeConn.Close();
 
 
+                //// clear the datatables to prevent appended duplicates
+                //DBconnection.DT_ApptSchd.Clear();
+                //DBconnection.DT_MonthlyApptSchd.Clear();
+                //DBconnection.DT_WeeklyApptSchd.Clear();
+                //DBconnection.DT_DailyApptSchd.Clear();
 
-                // clear the datatables to prevent appended duplicates
-
-                DBconnection.DT_ApptSchd.Clear();
-
-                DBconnection.DT_MonthlyApptSchd.Clear();
-
-                DBconnection.DT_WeeklyApptSchd.Clear();
-
-                DBconnection.DT_DailyApptSchd.Clear();
-
-
-
-                // refresh the datatables
-
-                DBconnection.GetApptSchd();
-
-                DBconnection.GetMonthlyApptSchd();
-
-                DBconnection.GetWeeklyApptSchd();
-
-                DBconnection.GetDailyApptSchd();
-
+                //// refresh the datatables
+                //DBconnection.GetApptSchd();
+                //DBconnection.GetMonthlyApptSchd();
+                //DBconnection.GetWeeklyApptSchd();
+                //DBconnection.GetDailyApptSchd();
             }
 
 
@@ -155,27 +135,27 @@ namespace Scheduling_Appointment
         {
 
 
-            //try
-            //{
-            //    if (appointmentsDGV.SelectedRows.Count < 1)
-            //    {
-            //        throw new ApplicationException("You must select an appointment to edit.");
-            //    }
-            //    var selectRow = appointmentsDGV.SelectedRows[0];
-            //    int selectAppointmentId = Convert.ToInt32(selectRow.Cells[0].Value);
-            //    //var editAppointment = new AddAppointments(this, selectAppointmentId);
-            //    //editAppointment.Show();
-            //    appointmentsDGV.ClearSelection();
-            //    Hide();
-            //}
-            //catch (ApplicationException error)
-            //{
-            //    MessageBox.Show(error.Message, "Instructions", MessageBoxButtons.OK);
-            //}
-            //catch (Exception err)
-            //{
-            //    MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
-            //}
+            try
+            {
+                if (appointmentsDGV.SelectedRows.Count < 1)
+                {
+                    throw new ApplicationException("You must select an appointment to edit.");
+                }
+                var selectRow = appointmentsDGV.SelectedRows[0];
+                int selectAppointmentId = Convert.ToInt32(selectRow.Cells[0].Value);
+                var editAppointment = new AddAppointments(this, selectAppointmentId);
+                editAppointment.Show();
+                appointmentsDGV.ClearSelection();
+                Hide();
+            }
+            catch (ApplicationException error)
+            {
+                MessageBox.Show(error.Message, "Instructions", MessageBoxButtons.OK);
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message, "Error", MessageBoxButtons.OK);
+            }
         }
 
         private void appointmentsDGV_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)

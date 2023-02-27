@@ -67,7 +67,7 @@ namespace Scheduling_Appointment
 
             else if 
             (
-                appointmentDate.Value.Date == DateTime.Now.Date
+                appointmentDate.Date == DateTime.Now.Date
                 && dtpStart.Value.TimeOfDay > localEnd.TimeOfDay
                 && dtpStart.Value.TimeOfDay > businessStart.TimeOfDay
                 && dtpStart.Value.TimeOfDay < businessEnd.TimeOfDay)
@@ -137,35 +137,51 @@ namespace Scheduling_Appointment
                 {
                     DataRowView dataRowView = cbCustomerName.SelectedItem as DataRowView;
                     int custID = Convert.ToInt32(cbCustomerName.SelectedValue);
-
+                    DateTime d1 = dtpDate.Value.Date;
+                    DateTime d2 = DateTime.Now;
                     DateTime startTime = dtpStart.Value.ToUniversalTime();
                     DateTime endTime = dtpEnd.Value.ToUniversalTime();
 
-                    int validate = appointmentValidator(startTime, endTime);
+                    bool validate = appointmentValidator(startTime, endTime);
 
-                    switch (validate)
+
+                    if (d1 > d2
+                    && dtpStart.Value.TimeOfDay >= startTime.TimeOfDay
+                    && dtpStart.Value.TimeOfDay < endTime.TimeOfDay)
                     {
-                        case 1:
-                            MessageBox.Show("This appointment isn't within business hours.");
-                            break;
-                        case 2:
-                            MessageBox.Show("This appointment conflict with another appointment.");
-                            break;
-                        case 3:
-                            MessageBox.Show("The appointments start time is after the end time.");
-                            break;
-                        case 4:
-                            MessageBox.Show("The start and end date are not on the same date.");
-                            break;
-                        default:
-                            DBconnection.addAppointment(custID, tbLocation.Text, tbType.Text, startTime, endTime);
-                            MessageBox.Show("Appointment has been added.");
-                            Hide();
-                            Appointments showAppointments = new Appointments();
-                            showAppointments.Closed += (s, args) => this.Close();
-                            showAppointments.Show();
-                            break;
+                        validate = true;
                     }
+                    else if (dtpDate.Value.Date == DateTime.Now.Date
+                       && dtpStart.Value.TimeOfDay > d2.TimeOfDay
+                       && dtpStart.Value.TimeOfDay > startTime.TimeOfDay
+                       && dtpStart.Value.TimeOfDay < endTime.TimeOfDay)
+                    {
+                        validate = true;
+                    }
+                    ;
+                    //switch (validate)
+                    //{
+                    //    case 1:
+                    //        MessageBox.Show("This appointment isn't within business hours.");
+                    //        break;
+                    //    case 2:
+                    //        MessageBox.Show("This appointment conflict with another appointment.");
+                    //        break;
+                    //    case 3:
+                    //        MessageBox.Show("The appointments start time is after the end time.");
+                    //        break;
+                    //    case 4:
+                    //        MessageBox.Show("The start and end date are not on the same date.");
+                    //        break;
+                    //    default:
+                    //        DBconnection.addAppointment(custID, tbLocation.Text, tbType.Text, startTime, endTime);
+                    //        MessageBox.Show("Appointment has been added.");
+                    //        Hide();
+                    //        Appointments showAppointments = new Appointments();
+                    //        showAppointments.Closed += (s, args) => this.Close();
+                    //        showAppointments.Show();
+                    //        break;
+                    //}
                 }
                 else
                 {
