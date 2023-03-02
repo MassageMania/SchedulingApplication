@@ -42,12 +42,25 @@ namespace Scheduling_Appointment
             this.btnCustomerRecords = new System.Windows.Forms.Button();
             this.btnAllAppointments = new System.Windows.Forms.Button();
             this.dtp = new System.Windows.Forms.DateTimePicker();
+            this.AppointmentId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CustomerId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TitleDGVTB = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LocationDGVTB = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StartDGVTB = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EndDGVTB = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.appointmentsDGV)).BeginInit();
             this.SuspendLayout();
             // 
             // appointmentsDGV
             // 
             this.appointmentsDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.appointmentsDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.AppointmentId,
+            this.CustomerId,
+            this.TitleDGVTB,
+            this.LocationDGVTB,
+            this.StartDGVTB,
+            this.EndDGVTB});
             this.appointmentsDGV.Location = new System.Drawing.Point(33, 102);
             this.appointmentsDGV.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.appointmentsDGV.Name = "appointmentsDGV";
@@ -188,6 +201,49 @@ namespace Scheduling_Appointment
             this.dtp.Size = new System.Drawing.Size(323, 26);
             this.dtp.TabIndex = 17;
             // 
+            // AppointmentId
+            // 
+            this.AppointmentId.DataPropertyName = "GetAllAppointments";
+            this.AppointmentId.HeaderText = "Appointment ID";
+            this.AppointmentId.MinimumWidth = 8;
+            this.AppointmentId.Name = "AppointmentId";
+            this.AppointmentId.Width = 150;
+            // 
+            // CustomerId
+            // 
+            this.CustomerId.HeaderText = "Customer ID";
+            this.CustomerId.MinimumWidth = 8;
+            this.CustomerId.Name = "CustomerId";
+            this.CustomerId.Width = 150;
+            // 
+            // TitleDGVTB
+            // 
+            this.TitleDGVTB.HeaderText = "Title";
+            this.TitleDGVTB.MinimumWidth = 8;
+            this.TitleDGVTB.Name = "TitleDGVTB";
+            this.TitleDGVTB.Width = 150;
+            // 
+            // LocationDGVTB
+            // 
+            this.LocationDGVTB.HeaderText = "Location";
+            this.LocationDGVTB.MinimumWidth = 8;
+            this.LocationDGVTB.Name = "LocationDGVTB";
+            this.LocationDGVTB.Width = 150;
+            // 
+            // StartDGVTB
+            // 
+            this.StartDGVTB.HeaderText = "Start";
+            this.StartDGVTB.MinimumWidth = 8;
+            this.StartDGVTB.Name = "StartDGVTB";
+            this.StartDGVTB.Width = 150;
+            // 
+            // EndDGVTB
+            // 
+            this.EndDGVTB.HeaderText = "End";
+            this.EndDGVTB.MinimumWidth = 8;
+            this.EndDGVTB.Name = "EndDGVTB";
+            this.EndDGVTB.Width = 150;
+            // 
             // Appointments
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -210,6 +266,7 @@ namespace Scheduling_Appointment
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Appointments";
             this.Text = "Appointments";
+            this.Load += new System.EventHandler(this.Appointments_Load);
             ((System.ComponentModel.ISupportInitialize)(this.appointmentsDGV)).EndInit();
             this.ResumeLayout(false);
 
@@ -229,5 +286,11 @@ namespace Scheduling_Appointment
         private System.Windows.Forms.Button btnCustomerRecords;
         private System.Windows.Forms.Button btnAllAppointments;
         private System.Windows.Forms.DateTimePicker dtp;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AppointmentId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CustomerId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TitleDGVTB;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LocationDGVTB;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StartDGVTB;
+        private System.Windows.Forms.DataGridViewTextBoxColumn EndDGVTB;
     }
 }

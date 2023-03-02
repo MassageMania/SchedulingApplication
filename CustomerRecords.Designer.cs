@@ -30,10 +30,9 @@
         {
             this.customerRecordsDGV = new System.Windows.Forms.DataGridView();
             this.btnAdd = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.btnModify = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.btnExit = new System.Windows.Forms.Button();
             this.lblName = new System.Windows.Forms.Label();
             this.lblAddress = new System.Windows.Forms.Label();
             this.lblAddress2 = new System.Windows.Forms.Label();
@@ -74,16 +73,18 @@
             this.btnAdd.TabIndex = 1;
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
-            // btnSave
+            // btnDelete
             // 
-            this.btnSave.Location = new System.Drawing.Point(140, 337);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(112, 35);
-            this.btnSave.TabIndex = 2;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnDelete.Location = new System.Drawing.Point(140, 337);
+            this.btnDelete.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(112, 35);
+            this.btnDelete.TabIndex = 2;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnModify
             // 
@@ -94,6 +95,7 @@
             this.btnModify.TabIndex = 3;
             this.btnModify.Text = "Modify";
             this.btnModify.UseVisualStyleBackColor = true;
+            this.btnModify.Click += new System.EventHandler(this.btnModify_Click);
             // 
             // btnCancel
             // 
@@ -105,16 +107,6 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // btnExit
-            // 
-            this.btnExit.Location = new System.Drawing.Point(504, 337);
-            this.btnExit.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(112, 35);
-            this.btnExit.TabIndex = 5;
-            this.btnExit.Text = "Exit";
-            this.btnExit.UseVisualStyleBackColor = true;
-            // 
             // lblName
             // 
             this.lblName.AutoSize = true;
@@ -124,7 +116,6 @@
             this.lblName.Size = new System.Drawing.Size(51, 20);
             this.lblName.TabIndex = 8;
             this.lblName.Text = "Name";
-            this.lblName.Click += new System.EventHandler(this.Name);
             // 
             // lblAddress
             // 
@@ -293,10 +284,9 @@
             this.Controls.Add(this.lblAddress2);
             this.Controls.Add(this.lblAddress);
             this.Controls.Add(this.lblName);
-            this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnModify);
-            this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.customerRecordsDGV);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -311,10 +301,9 @@
 
         private System.Windows.Forms.DataGridView customerRecordsDGV;
         private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnModify;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.Label lblAddress;
         private System.Windows.Forms.Label lblAddress2;

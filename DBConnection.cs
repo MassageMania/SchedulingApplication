@@ -69,28 +69,7 @@ namespace Scheduling_Appointment
         {
             userName = currentUserName;
         }
-        //private void btnCustomers_Click
-        //public static List<User> getAllUsers()
-        //{
-        //    List<User> listUsers = new List<User>();
-        //    string query = "SELECT * FROM user";
-        //    MySqlCommand cmd = new MySqlCommand(query, conn);
-        //    MySqlDataReader dataReader = cmd.ExecuteReader();
-
-        //    while (dataReader.Read())
-        //    {
-        //        int userID = Convert.ToInt32(dataReader[0]);
-        //        string userName = dataReader[1].ToString();
-        //        string password = dataReader[2].ToString();
-        //        int active = Convert.ToInt32(dataReader[3]);
-        //        DateTime createDate = Convert.ToDateTime(dataReader[4]).ToLocalTime();
-        //        string createdBy = dataReader[5].ToString();
-        //        DateTime lastUpdate = Convert.ToDateTime(dataReader[6]).ToLocalTime();
-        //        string lastUpdateBy = dataReader[7].ToString();
-
-        //        listUsers.Add(new User(userID, userName, password, active, createDate, createdBy, lastUpdate, lastUpdateBy));
-        //    }
-        //}
+       
 
         public static void getAppointments()
         {
@@ -249,12 +228,25 @@ namespace Scheduling_Appointment
             MySqlCommand cmd = new MySqlCommand(query, conn);
             cmd.ExecuteNonQuery();
 
+            //DateTime dateToUpdate = DateTime.Now;
+            //string sqlFormattedDate = dateToUpdate.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            //string update = $"UPDATE customer AS c " +
+            //    $"INNER JOIN address  AS a " +
+            //    $"ON c.addressId = c.addressId " +
+            //    $"SET c.customerName = '{customerName}', " +
+            //    $"c.lastUpdate = '{sqlFormattedDate}', " +
+            //    $"a.address = '{address}', " +
+            //    $"a.phone = '{phoneNumber}', " +
+            //    $"a.postalCode = '{postalCode}', " +
+            //    $"a.cityId = '{cityId}' " +
+            //    $"WHERE c.customerId = '{customerId}' " +
+            //    $"AND a.addressId = '{addressId}'";
+
             Customer updateCustomer = new Customer(customer.CustomerId, customerName, customer.AddressId, customer.Active, customer.CreateDate, customer.CreatedBy, now, user);
   
         }
 
-        public static int AddAddress(string address1, string address2, int cityId, string postalCode, string phone, DateTime createDate, string createdBy, DateTime lastUpdate
-            , string lastUpdateBy)
+        public static int AddAddress(string address1, string address2, int cityId, string postalCode, string phone, DateTime createDate, string createdBy, DateTime lastUpdate, string lastUpdateBy)
         {
             DateTime now = DateTime.Now;
            
@@ -312,48 +304,30 @@ namespace Scheduling_Appointment
 
         public static void upDateAddress(Address address, string address1, string address2, int cityId, string postalCode, string phone, string user)
         {
-            DateTime now = DateTime.Now;
-            string nowString = now.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
-            string query = $"UPDATE address SET address={address1}, address2={address2}, cityId={cityId}, postalCode={postalCode}, phone={phone}, lastUpdated={nowString}, lastUpdateBy={user} WHERE addressId={address.AddressId};";
+
+            //Original
+            //DateTime now = DateTime.Now;
+            //string nowString = now.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
+            //string query = $"UPDATE address SET address={address1}, address2={address2}, cityId={cityId}, postalCode={postalCode}, phone={phone}, lastUpdated={nowString}, lastUpdateBy={user} WHERE addressId={address.AddressId};";
+            //MySqlCommand cmd = new MySqlCommand(query, conn);
+            //cmd.ExecuteNonQuery();
+
+            //Option 2
+            string query = @"UPDATE address SET address = @address1, adress2 = @address2, 
+                           cityId = @cityId, postalCode = @postalCode, phone = @phone, lastUpdate = Now(), lastUpdatedBy = @user";
+
+
+
             MySqlCommand cmd = new MySqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("address1", address1);
+            cmd.Parameters.AddWithValue("address2", address2);
+            cmd.Parameters.AddWithValue("cityId", cityId);
+            cmd.Parameters.AddWithValue("postalCode", postalCode);
+            cmd.Parameters.AddWithValue("phone", phone);
+            cmd.Parameters.AddWithValue("user", DBconnection.GetUserName());
+
             cmd.ExecuteNonQuery();
-        }
-
-        public static void getCity()
-        {
-            string query = "SELECT * FROM city";
-            MySqlCommand cmd = new MySqlCommand(query, conn);
-            MySqlDataReader dataReader = cmd.ExecuteReader();
-
-            while (dataReader.Read())
-            {
-                int cityId = Convert.ToInt32(dataReader[0]);
-                string city = dataReader[1].ToString();
-                int countryId = Convert.ToInt32(dataReader[2]);
-                DateTime createDate = Convert.ToDateTime(dataReader[3]).ToLocalTime();
-                string createdBy = dataReader[4].ToString();
-                DateTime lastUpdated = Convert.ToDateTime(dataReader[5]).ToLocalTime();
-                string lastUpdatedBy = dataReader[6].ToString();
-
-            }
-        }
-
-        public static void getCountry()
-        {
-            string query = "SELECT * FROM country";
-            MySqlCommand cmd = new MySqlCommand(query, conn);
-            MySqlDataReader dataReader = cmd.ExecuteReader();
-
-            while (dataReader.Read())
-            {
-                int countryId = Convert.ToInt32(dataReader[0]);
-                string country = dataReader[1].ToString();
-                DateTime createDate = Convert.ToDateTime(dataReader[2]).ToLocalTime();
-                string createdBy = dataReader[3].ToString();
-                DateTime lastUpdated = Convert.ToDateTime(dataReader[4]).ToLocalTime();
-                string lastUpdatedBy = dataReader[5].ToString();
-
-            }
         }
 
 

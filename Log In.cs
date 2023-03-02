@@ -20,7 +20,7 @@ namespace Scheduling_Appointment
         public LogIn()
         {
             InitializeComponent();
-            //CultureInfo.CurrentCulture = new CultureInfo("fr");     //For testing purposes only Remove before submission.
+            CultureInfo.CurrentCulture = new CultureInfo("fr");     //For testing purposes only Remove before submission.
 
             //Language check here.
             if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "fr")

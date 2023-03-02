@@ -1,5 +1,5 @@
 ﻿
-namespace SchedulingApplication
+namespace Scheduling_Appointment
 {
     partial class ModifyAppointments
     {
@@ -223,7 +223,7 @@ namespace SchedulingApplication
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(411, 556);
+            this.ClientSize = new System.Drawing.Size(411, 421);
             this.Controls.Add(this.lblDate);
             this.Controls.Add(this.dtpEnd);
             this.Controls.Add(this.dtpStart);

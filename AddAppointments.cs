@@ -18,6 +18,7 @@ namespace Scheduling_Appointment
         public AddModAppointments()
         {
             InitializeComponent();
+                    
         }
 
         private bool emptyCheck()
@@ -108,7 +109,7 @@ namespace Scheduling_Appointment
         //Method to validate all fields are filled out
         private bool validate()
         {
-            if (emptyCheck() == false)
+            if (emptyCheck() == true)
             {
                 MessageBox.Show("Please fill out all fields.");
                 return false;

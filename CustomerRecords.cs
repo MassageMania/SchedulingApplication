@@ -13,10 +13,16 @@ namespace Scheduling_Appointment
 {
     public partial class CustomerRecordsForm : Form
     {
-        DataTable dtCustomerRecords = new DataTable();
+        DataTable customerRecords = new DataTable();
         public CustomerRecordsForm()
         {
             InitializeComponent();
+
+            customerRecordsDGV.DataSource = GetAllCustomers();
+            customerRecordsDGV.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            customerRecordsDGV.ReadOnly = true;
+            customerRecordsDGV.MultiSelect = false;
+            customerRecordsDGV.AllowUserToAddRows = false;
         }
 
         //private void customerrecords_load(object sender, eventargs e)
@@ -36,7 +42,7 @@ namespace Scheduling_Appointment
 
         public DataTable GetAllCustomers()
         {
-            DataTable customerRecords = new DataTable();
+            customerRecords = new DataTable();
             string getCustomers = "SELECT  * from customer";
             MySqlCommand sqlCommand = new MySqlCommand(getCustomers, DBconnection.conn);
 
@@ -64,16 +70,24 @@ namespace Scheduling_Appointment
 
         }
 
-        private void Name(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnBack_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
 
-        
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            //DBconnection.addCustomer();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            //customerRecordsDGV.SelectedRows[Customer customerId]
+        }
+
+        private void btnModify_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

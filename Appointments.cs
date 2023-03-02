@@ -143,9 +143,11 @@ namespace Scheduling_Appointment
                 }
                 var selectRow = appointmentsDGV.SelectedRows[0];
                 int selectAppointmentId = Convert.ToInt32(selectRow.Cells[0].Value);
-                var editAppointment = new AddAppointments(this, selectAppointmentId);
-                editAppointment.Show();
-                appointmentsDGV.ClearSelection();
+                //var addAppointments = new AddModAppointments();
+                //addAppointments.Show();
+                //appointmentsDGV.ClearSelection();
+                var modAppointments = new ModifyAppointments();
+                modAppointments.Show();
                 Hide();
             }
             catch (ApplicationException error)
@@ -234,6 +236,11 @@ namespace Scheduling_Appointment
 
         }
 
+        private void Appointments_Load(object sender, EventArgs e)
+        {
 
+        }
+
+     
     }
 }
