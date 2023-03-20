@@ -36,34 +36,24 @@ namespace Scheduling_Appointment
             this.btnAddModify = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
-            this.btnConn = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnReports = new System.Windows.Forms.Button();
             this.btnCustomerRecords = new System.Windows.Forms.Button();
             this.btnAllAppointments = new System.Windows.Forms.Button();
             this.dtp = new System.Windows.Forms.DateTimePicker();
-            this.AppointmentId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CustomerId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TitleDGVTB = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LocationDGVTB = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.StartDGVTB = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EndDGVTB = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dtpLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.appointmentsDGV)).BeginInit();
             this.SuspendLayout();
             // 
             // appointmentsDGV
             // 
+            this.appointmentsDGV.AllowUserToAddRows = false;
+            this.appointmentsDGV.AllowUserToDeleteRows = false;
             this.appointmentsDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.appointmentsDGV.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.AppointmentId,
-            this.CustomerId,
-            this.TitleDGVTB,
-            this.LocationDGVTB,
-            this.StartDGVTB,
-            this.EndDGVTB});
             this.appointmentsDGV.Location = new System.Drawing.Point(33, 102);
             this.appointmentsDGV.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.appointmentsDGV.Name = "appointmentsDGV";
+            this.appointmentsDGV.ReadOnly = true;
             this.appointmentsDGV.RowHeadersWidth = 62;
             this.appointmentsDGV.Size = new System.Drawing.Size(779, 249);
             this.appointmentsDGV.TabIndex = 1;
@@ -140,16 +130,6 @@ namespace Scheduling_Appointment
             this.btnDelete.UseVisualStyleBackColor = false;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // btnConn
-            // 
-            this.btnConn.Location = new System.Drawing.Point(609, 18);
-            this.btnConn.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.btnConn.Name = "btnConn";
-            this.btnConn.Size = new System.Drawing.Size(112, 51);
-            this.btnConn.TabIndex = 10;
-            this.btnConn.Text = "Connection Checker";
-            this.btnConn.UseVisualStyleBackColor = true;
-            // 
             // btnClose
             // 
             this.btnClose.Location = new System.Drawing.Point(673, 396);
@@ -183,7 +163,7 @@ namespace Scheduling_Appointment
             // btnAllAppointments
             // 
             this.btnAllAppointments.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.btnAllAppointments.Location = new System.Drawing.Point(338, 32);
+            this.btnAllAppointments.Location = new System.Drawing.Point(690, 34);
             this.btnAllAppointments.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnAllAppointments.Name = "btnAllAppointments";
             this.btnAllAppointments.Size = new System.Drawing.Size(122, 60);
@@ -196,53 +176,19 @@ namespace Scheduling_Appointment
             // 
             this.dtp.CustomFormat = "MM/dd/yyyy";
             this.dtp.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtp.Location = new System.Drawing.Point(272, 359);
+            this.dtp.Location = new System.Drawing.Point(343, 66);
             this.dtp.Name = "dtp";
             this.dtp.Size = new System.Drawing.Size(323, 26);
             this.dtp.TabIndex = 17;
             // 
-            // AppointmentId
+            // dtpLabel
             // 
-            this.AppointmentId.DataPropertyName = "GetAllAppointments";
-            this.AppointmentId.HeaderText = "Appointment ID";
-            this.AppointmentId.MinimumWidth = 8;
-            this.AppointmentId.Name = "AppointmentId";
-            this.AppointmentId.Width = 150;
-            // 
-            // CustomerId
-            // 
-            this.CustomerId.HeaderText = "Customer ID";
-            this.CustomerId.MinimumWidth = 8;
-            this.CustomerId.Name = "CustomerId";
-            this.CustomerId.Width = 150;
-            // 
-            // TitleDGVTB
-            // 
-            this.TitleDGVTB.HeaderText = "Title";
-            this.TitleDGVTB.MinimumWidth = 8;
-            this.TitleDGVTB.Name = "TitleDGVTB";
-            this.TitleDGVTB.Width = 150;
-            // 
-            // LocationDGVTB
-            // 
-            this.LocationDGVTB.HeaderText = "Location";
-            this.LocationDGVTB.MinimumWidth = 8;
-            this.LocationDGVTB.Name = "LocationDGVTB";
-            this.LocationDGVTB.Width = 150;
-            // 
-            // StartDGVTB
-            // 
-            this.StartDGVTB.HeaderText = "Start";
-            this.StartDGVTB.MinimumWidth = 8;
-            this.StartDGVTB.Name = "StartDGVTB";
-            this.StartDGVTB.Width = 150;
-            // 
-            // EndDGVTB
-            // 
-            this.EndDGVTB.HeaderText = "End";
-            this.EndDGVTB.MinimumWidth = 8;
-            this.EndDGVTB.Name = "EndDGVTB";
-            this.EndDGVTB.Width = 150;
+            this.dtpLabel.AutoSize = true;
+            this.dtpLabel.Location = new System.Drawing.Point(339, 32);
+            this.dtpLabel.Name = "dtpLabel";
+            this.dtpLabel.Size = new System.Drawing.Size(91, 20);
+            this.dtpLabel.TabIndex = 18;
+            this.dtpLabel.Text = "Date Picker";
             // 
             // Appointments
             // 
@@ -250,12 +196,12 @@ namespace Scheduling_Appointment
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(836, 692);
+            this.Controls.Add(this.dtpLabel);
             this.Controls.Add(this.dtp);
             this.Controls.Add(this.btnAllAppointments);
             this.Controls.Add(this.btnCustomerRecords);
             this.Controls.Add(this.btnReports);
             this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.btnConn);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnAddModify);
@@ -266,9 +212,9 @@ namespace Scheduling_Appointment
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Appointments";
             this.Text = "Appointments";
-            this.Load += new System.EventHandler(this.Appointments_Load);
             ((System.ComponentModel.ISupportInitialize)(this.appointmentsDGV)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -280,17 +226,11 @@ namespace Scheduling_Appointment
         private System.Windows.Forms.Button btnAddModify;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.Button btnConn;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnReports;
         private System.Windows.Forms.Button btnCustomerRecords;
         private System.Windows.Forms.Button btnAllAppointments;
         private System.Windows.Forms.DateTimePicker dtp;
-        private System.Windows.Forms.DataGridViewTextBoxColumn AppointmentId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CustomerId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TitleDGVTB;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LocationDGVTB;
-        private System.Windows.Forms.DataGridViewTextBoxColumn StartDGVTB;
-        private System.Windows.Forms.DataGridViewTextBoxColumn EndDGVTB;
+        private System.Windows.Forms.Label dtpLabel;
     }
 }

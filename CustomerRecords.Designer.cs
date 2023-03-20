@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CustomerRecordsForm));
             this.customerRecordsDGV = new System.Windows.Forms.DataGridView();
             this.btnAdd = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -50,6 +51,7 @@
             this.btnBack = new System.Windows.Forms.Button();
             this.tbCountry = new System.Windows.Forms.TextBox();
             this.tbCity = new System.Windows.Forms.TextBox();
+            this.lblInstructions = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.customerRecordsDGV)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,6 +64,7 @@
             this.customerRecordsDGV.RowHeadersWidth = 62;
             this.customerRecordsDGV.Size = new System.Drawing.Size(684, 309);
             this.customerRecordsDGV.TabIndex = 0;
+            this.customerRecordsDGV.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.customerRecordsDGV_CellClick);
             this.customerRecordsDGV.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.customerRecordsDGV_DataBindingComplete);
             // 
             // btnAdd
@@ -70,7 +73,7 @@
             this.btnAdd.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(112, 35);
-            this.btnAdd.TabIndex = 1;
+            this.btnAdd.TabIndex = 9;
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
@@ -81,7 +84,7 @@
             this.btnDelete.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(112, 35);
-            this.btnDelete.TabIndex = 2;
+            this.btnDelete.TabIndex = 10;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
@@ -92,7 +95,7 @@
             this.btnModify.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnModify.Name = "btnModify";
             this.btnModify.Size = new System.Drawing.Size(112, 35);
-            this.btnModify.TabIndex = 3;
+            this.btnModify.TabIndex = 11;
             this.btnModify.Text = "Modify";
             this.btnModify.UseVisualStyleBackColor = true;
             this.btnModify.Click += new System.EventHandler(this.btnModify_Click);
@@ -102,10 +105,11 @@
             this.btnCancel.Location = new System.Drawing.Point(382, 337);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(112, 35);
-            this.btnCancel.TabIndex = 4;
-            this.btnCancel.Text = "Cancel";
+            this.btnCancel.Size = new System.Drawing.Size(187, 35);
+            this.btnCancel.TabIndex = 12;
+            this.btnCancel.Text = "Clear Selection";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // lblName
             // 
@@ -183,7 +187,7 @@
             this.tbName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbName.Name = "tbName";
             this.tbName.Size = new System.Drawing.Size(148, 26);
-            this.tbName.TabIndex = 19;
+            this.tbName.TabIndex = 1;
             // 
             // tbId
             // 
@@ -191,7 +195,7 @@
             this.tbId.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbId.Name = "tbId";
             this.tbId.Size = new System.Drawing.Size(148, 26);
-            this.tbId.TabIndex = 20;
+            this.tbId.TabIndex = 2;
             // 
             // tbAddress
             // 
@@ -199,7 +203,7 @@
             this.tbAddress.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbAddress.Name = "tbAddress";
             this.tbAddress.Size = new System.Drawing.Size(148, 26);
-            this.tbAddress.TabIndex = 21;
+            this.tbAddress.TabIndex = 3;
             // 
             // tbAddress2
             // 
@@ -207,7 +211,7 @@
             this.tbAddress2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbAddress2.Name = "tbAddress2";
             this.tbAddress2.Size = new System.Drawing.Size(148, 26);
-            this.tbAddress2.TabIndex = 22;
+            this.tbAddress2.TabIndex = 4;
             // 
             // tbPostalCode
             // 
@@ -215,7 +219,7 @@
             this.tbPostalCode.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbPostalCode.Name = "tbPostalCode";
             this.tbPostalCode.Size = new System.Drawing.Size(148, 26);
-            this.tbPostalCode.TabIndex = 25;
+            this.tbPostalCode.TabIndex = 7;
             // 
             // tbPhoneNumber
             // 
@@ -223,7 +227,7 @@
             this.tbPhoneNumber.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbPhoneNumber.Name = "tbPhoneNumber";
             this.tbPhoneNumber.Size = new System.Drawing.Size(148, 26);
-            this.tbPhoneNumber.TabIndex = 27;
+            this.tbPhoneNumber.TabIndex = 8;
             // 
             // lblId
             // 
@@ -231,9 +235,9 @@
             this.lblId.Location = new System.Drawing.Point(740, 58);
             this.lblId.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblId.Name = "lblId";
-            this.lblId.Size = new System.Drawing.Size(26, 20);
+            this.lblId.Size = new System.Drawing.Size(99, 20);
             this.lblId.TabIndex = 28;
-            this.lblId.Text = "ID";
+            this.lblId.Text = "Customer ID";
             // 
             // btnBack
             // 
@@ -241,7 +245,7 @@
             this.btnBack.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(112, 35);
-            this.btnBack.TabIndex = 29;
+            this.btnBack.TabIndex = 13;
             this.btnBack.Text = "Back";
             this.btnBack.UseVisualStyleBackColor = true;
             this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
@@ -252,7 +256,7 @@
             this.tbCountry.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbCountry.Name = "tbCountry";
             this.tbCountry.Size = new System.Drawing.Size(148, 26);
-            this.tbCountry.TabIndex = 30;
+            this.tbCountry.TabIndex = 6;
             // 
             // tbCity
             // 
@@ -260,13 +264,23 @@
             this.tbCity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbCity.Name = "tbCity";
             this.tbCity.Size = new System.Drawing.Size(148, 26);
-            this.tbCity.TabIndex = 31;
+            this.tbCity.TabIndex = 5;
+            // 
+            // lblInstructions
+            // 
+            this.lblInstructions.AutoSize = true;
+            this.lblInstructions.Location = new System.Drawing.Point(1102, 14);
+            this.lblInstructions.Name = "lblInstructions";
+            this.lblInstructions.Size = new System.Drawing.Size(340, 200);
+            this.lblInstructions.TabIndex = 29;
+            this.lblInstructions.Text = resources.GetString("lblInstructions.Text");
             // 
             // CustomerRecordsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1073, 393);
+            this.ClientSize = new System.Drawing.Size(1446, 393);
+            this.Controls.Add(this.lblInstructions);
             this.Controls.Add(this.tbCity);
             this.Controls.Add(this.tbCountry);
             this.Controls.Add(this.btnBack);
@@ -290,6 +304,7 @@
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.customerRecordsDGV);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Name = "CustomerRecordsForm";
             this.Text = "Customer Records";
             ((System.ComponentModel.ISupportInitialize)(this.customerRecordsDGV)).EndInit();
             this.ResumeLayout(false);
@@ -321,5 +336,6 @@
         private System.Windows.Forms.Button btnBack;
         private System.Windows.Forms.TextBox tbCountry;
         private System.Windows.Forms.TextBox tbCity;
+        private System.Windows.Forms.Label lblInstructions;
     }
 }

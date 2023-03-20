@@ -117,4 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="lblInstructional.Text" xml:space="preserve">
+    <value>When using the report system, 
+the drop down boxes at the top 
+are used with the buttons at the 
+bottom. 
+Selecting multiple boxes does not impact 
+query feature of buttons.  
+Example:
+Selecting Type:Lunch AND 
+Customer: John Doe does NOT combine 
+the search to find Lunch AND John Doe.
+</value>
+  </data>
 </root>

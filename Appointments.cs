@@ -15,16 +15,12 @@ namespace Scheduling_Appointment
 {
     public partial class Appointments : Form
     {
-        DateTime currentDate;
-        private bool monthSelected = true;
-        DataTable allAppointments = new DataTable();
+       
 
 
         public Appointments()
         {
             InitializeComponent();
-            currentDate = DateTime.Now;
-
 
             // Mark Kinkaid Sword and shield - Sword DGV
             appointmentsDGV.DataSource = GetAllAppointments();
@@ -32,11 +28,30 @@ namespace Scheduling_Appointment
             appointmentsDGV.ReadOnly = true;
             appointmentsDGV.MultiSelect = false;
             appointmentsDGV.AllowUserToAddRows = false;
-            
+
+            // Clean up / Hide Column Headers for appointmentsDGV
+            appointmentsDGV.Columns[0].HeaderText = "Appointment ID";
+            appointmentsDGV.Columns[1].HeaderText = "Customer ID";
+            appointmentsDGV.Columns[2].HeaderText = "User ID";
+            appointmentsDGV.Columns[3].Visible = false; //title
+            appointmentsDGV.Columns[4].Visible = false; // description
+            appointmentsDGV.Columns[5].Visible = false; // location
+            appointmentsDGV.Columns[6].Visible = false; // contact
+            appointmentsDGV.Columns[7].HeaderText = "Type"; // type
+            appointmentsDGV.Columns[8].Visible = false; // url
+            appointmentsDGV.Columns[9].HeaderText = "Start Date"; // start
+            appointmentsDGV.Columns[10].HeaderText = "End Date"; // end
+            appointmentsDGV.Columns[11].Visible = false; // created
+            appointmentsDGV.Columns[12].Visible = false; // createBy
+            appointmentsDGV.Columns[13].HeaderText = "Last Update";
+            appointmentsDGV.Columns[14].HeaderText = "Last Updated By";
+
+
         }
 
         public DataTable GetAllAppointments()
         {
+            DataTable allAppointments = new DataTable();
             allAppointments = new DataTable();
             string getAppointments = "SELECT * from Appointment";
             MySqlCommand sqlCommand = new MySqlCommand(getAppointments, DBconnection.conn);
@@ -46,16 +61,7 @@ namespace Scheduling_Appointment
             return allAppointments;
         }
 
-        private void getData(string s)
-        {
-            using (MySqlConnection connection = new MySqlConnection(DBconnection.connectionString))
-            {
-                MySqlCommand command = new MySqlCommand(s, connection);
-                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-                adapter.Fill(allAppointments);
-            }
-        }
-
+      
         private void btnDelete_Click(object sender, EventArgs e)
         {
             try
@@ -64,13 +70,21 @@ namespace Scheduling_Appointment
                 {
                     throw new ApplicationException("You must select an appointment to delete.");
                 }
+                            
                 DialogResult confirmDelete = MessageBox.Show("Confirm deletion of appointment.", "Application Instruction", MessageBoxButtons.YesNo);
                 if (confirmDelete == DialogResult.Yes)
                 {
-                    var selectRow = appointmentsDGV.SelectedRows[0];
-                    int selectAppointmentId = Convert.ToInt32(selectRow.Cells[0].Value);
-                    //Appointment selectAppointment = MainMenu.ListOfAppointments.Where(appt => appt.AppointmentId == selectAppointmentId).Single();
-                    //DBconnection.deleteAppointment(selectAppointment);
+                    int index = appointmentsDGV.CurrentRow.Index;
+                    DataTable dt = (DataTable)appointmentsDGV.DataSource;
+                    int appointmentID = (int)dt.Rows[index]["appointmentID"];
+
+                    string delAppointment = "DELETE FROM Appointment WHERE appointmentId = @appointmentId";
+                    MySqlCommand mySqlCommand = new MySqlCommand(delAppointment, DBconnection.conn);
+                    mySqlCommand.Parameters.AddWithValue("@appointmentId", appointmentID);
+                    mySqlCommand.ExecuteNonQuery();
+                    appointmentsDGV.DataSource = GetAllAppointments();
+                    
+                    
                 }
             }
             catch (ApplicationException error)
@@ -83,54 +97,7 @@ namespace Scheduling_Appointment
             }
 
         }
-        public static void UpdateExistingAppointment(Appointment appointment)
-        {
-
-            try
-
-            {
-                string start = appointment.Start.ToString("yyyy-MM-dd HH:mm:00");
-                string end = appointment.End.ToString("yyyy-MM-dd HH:mm:00");
-                //DBconnection.conn.Open();
-                string cmdString = @"UPDATE appointment SET customerId = appointment.CustomerId, userId = appointment.UserId, title = appointment.ApptTitle, description = appointment.ApptDescription,
-
-                                      location = appointment.Location, contact = appointment.Contact, type = appointment.Type, url = appointment.ApptURL, start = start,
-
-                                      end = end, lastUpdate = UTC_TIMESTAMP(), lastUpdateBy = appointment.LastUpdatedBy
-
-                                      WHERE appointmentId = appointment.AppointmentID";
-
-                MySqlCommand updateAppt = new MySqlCommand(cmdString, DBconnection.conn);
-                updateAppt.ExecuteNonQuery();
-
-
-
-                //// clear the datatables to prevent appended duplicates
-                //DBconnection.DT_ApptSchd.Clear();
-                //DBconnection.DT_MonthlyApptSchd.Clear();
-                //DBconnection.DT_WeeklyApptSchd.Clear();
-                //DBconnection.DT_DailyApptSchd.Clear();
-
-                //// refresh the datatables
-                //DBconnection.GetApptSchd();
-                //DBconnection.GetMonthlyApptSchd();
-                //DBconnection.GetWeeklyApptSchd();
-                //DBconnection.GetDailyApptSchd();
-            }
-
-
-
-            catch (MySqlException ex)
-
-            {
-
-                MessageBox.Show(ex.Message);
-
-                //DatabaseConnection.activeConn.Close();
-
-            }
-
-        }
+       
         private void btnAddModify_Click(object sender, EventArgs e)
         {
 
@@ -141,14 +108,52 @@ namespace Scheduling_Appointment
                 {
                     throw new ApplicationException("You must select an appointment to edit.");
                 }
-                var selectRow = appointmentsDGV.SelectedRows[0];
-                int selectAppointmentId = Convert.ToInt32(selectRow.Cells[0].Value);
-                //var addAppointments = new AddModAppointments();
-                //addAppointments.Show();
-                //appointmentsDGV.ClearSelection();
-                var modAppointments = new ModifyAppointments();
+
+
+                int indexOfCurrentRow = appointmentsDGV.CurrentRow.Index;
+                DataTable dataTable = (DataTable)appointmentsDGV.DataSource;
+                int appointmentId = (int)dataTable.Rows[indexOfCurrentRow]["appointmentId"];
+                int customerId = (int)dataTable.Rows[indexOfCurrentRow]["customerId"];
+                int userId = (int)dataTable.Rows[indexOfCurrentRow]["userId"];
+                string location = (string)dataTable.Rows[indexOfCurrentRow]["location"];
+                string type = (string)dataTable.Rows[indexOfCurrentRow]["type"];
+                string title = (string)dataTable.Rows[indexOfCurrentRow]["title"];
+                DateTime start = (DateTime)dataTable.Rows[indexOfCurrentRow]["start"];
+                DateTime end = (DateTime)dataTable.Rows[indexOfCurrentRow]["end"];
+                string description = (string)dataTable.Rows[indexOfCurrentRow]["description"];
+                string contact = (string)dataTable.Rows[indexOfCurrentRow]["contact"];
+                string customerName = "";
+
+
+                //getting customer Name from customer table to import to Update page 
+                string getCustomerName = @"SELECT customerName FROM customer WHERE customerId = @customerId";
+                MySqlCommand command = new MySqlCommand(getCustomerName, DBconnection.conn);
+                command.Parameters.AddWithValue("@customerId", customerId);
+
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    customerName = reader.GetString("customerName");
+                }
+                reader.Close();
+
+                //getting user Name from user table to import to Update page 
+                string userName = "";
+                string getUserName = @"SELECT userName FROM user WHERE userId = @userId";
+                MySqlCommand command2 = new MySqlCommand(getUserName, DBconnection.conn);
+                command2.Parameters.AddWithValue("@userId", userId);
+
+                MySqlDataReader reader2 = command2.ExecuteReader();
+                while (reader2.Read())
+                {
+                    userName = reader2.GetString("userName");
+                }
+                reader2.Close();
+
+
+                var modAppointments = new ModifyAppointments(appointmentId, customerId, customerName, userId, userName, location, type, title, start, end, description, contact);
                 modAppointments.Show();
-                Hide();
+                
             }
             catch (ApplicationException error)
             {
@@ -160,14 +165,14 @@ namespace Scheduling_Appointment
             }
         }
 
-        private void appointmentsDGV_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        public void appointmentsDGV_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             appointmentsDGV.ClearSelection();
         }
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            //back
+            Application.Exit();
         }
 
         private void btnCustomerRecords_Click(object sender, EventArgs e)
@@ -178,14 +183,15 @@ namespace Scheduling_Appointment
 
         private void btnReports_Click(object sender, EventArgs e)
         {
-            //var formReports = new formReports();
-            //formReports.Show();
+            var Reports = new Reports();
+            Reports.Show();
         }
 
-        private void btnAdd_Click(object sender, EventArgs e)
+        public void btnAdd_Click(object sender, EventArgs e)
         {
             var addAppointments = new AddModAppointments();
             addAppointments.Show();
+            //ToDo  When addAppointments closes Update DGV.
         }
 
         private void btnAllAppointments_Click(object sender, EventArgs e)
@@ -195,7 +201,8 @@ namespace Scheduling_Appointment
         }
 
         private void btnWeek_Click(object sender, EventArgs e)
-        {            
+        {
+            DataTable allAppointments = new DataTable();
             var startDate = dtp.Value;
             var endDate = dtp.Value.AddDays(7);
             string getAppointments = @"SELECT * from Appointment 
@@ -217,6 +224,7 @@ namespace Scheduling_Appointment
 
         private void btnMonth_Click(object sender, EventArgs e)
         {
+            DataTable allAppointments = new DataTable();
             var startDate = dtp.Value;
             var endDate = dtp.Value.AddDays(30);
             string getAppointments = @"SELECT * from Appointment 
@@ -236,11 +244,6 @@ namespace Scheduling_Appointment
 
         }
 
-        private void Appointments_Load(object sender, EventArgs e)
-        {
-
-        }
-
-     
+    
     }
 }

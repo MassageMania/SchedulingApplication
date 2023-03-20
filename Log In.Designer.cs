@@ -121,7 +121,6 @@ namespace Scheduling_Appointment
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "LogIn";
             this.Text = "Log In";
-            this.Load += new System.EventHandler(this.LogIn_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

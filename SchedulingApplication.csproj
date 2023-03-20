@@ -115,7 +115,7 @@
     <Compile Include="City.cs" />
     <Compile Include="Country.cs" />
     <Compile Include="Customer.cs" />
-    <Compile Include="DBConnection.cs" />
+    <Compile Include="DBconnection.cs" />
     <Compile Include="CustomerRecords.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,6 +127,12 @@
     </Compile>
     <Compile Include="DeleteAppointment.Designer.cs">
       <DependentUpon>DeleteAppointment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Reports.Designer.cs">
+      <DependentUpon>Reports.cs</DependentUpon>
     </Compile>
     <Compile Include="LoginException.cs" />
     <Compile Include="Log In.cs">
@@ -153,24 +159,34 @@
     <Compile Include="User.cs" />
     <EmbeddedResource Include="Appointments.resx">
       <DependentUpon>Appointments.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="AddAppointments.resx">
       <DependentUpon>AddAppointments.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomerRecords.resx">
       <DependentUpon>CustomerRecords.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DeleteAppointment.resx">
       <DependentUpon>DeleteAppointment.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports.resx">
+      <DependentUpon>Reports.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Log In.resx">
       <DependentUpon>Log In.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ModifyAppointments.resx">
       <DependentUpon>ModifyAppointments.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MonthlyAppointments.resx">
       <DependentUpon>MonthlyAppointments.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -180,6 +196,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

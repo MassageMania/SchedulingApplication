@@ -9,18 +9,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Scheduling_Appointment
 {
     public partial class LogIn : Form
     {
-        //private List<User> users;
-        private string culture;
+        //MySqlConnection conn; 
+        //string connString;
+        string invalidLoginHeader = "Login Error";
+        string invalidLogin = "Invalid user credentials entered.  Please try again.";
 
         public LogIn()
         {
             InitializeComponent();
-            CultureInfo.CurrentCulture = new CultureInfo("fr");     //For testing purposes only Remove before submission.
 
             //Language check here.
             if (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "fr")
@@ -29,89 +31,74 @@ namespace Scheduling_Appointment
                 lblUsername.Text = ("Nom d'utiliasateur");
                 btnLogIn.Text = ("S'identifier");
                 btnCancel.Text = ("Annuler");
+                invalidLogin = "Informations d’identification utilisateur entrées non valides.  Veuillez réessayer.";
+                invalidLoginHeader = "Erreur de connexion";
             }
         }
 
-        private void LoginToFrench()
-        {
-            lblPassword.Text = ("Mot de passe ");
-            lblUsername.Text = ("Nom d'utiliasateur");
-            btnLogIn.Text = ("S'identifier");
-            btnCancel.Text = ("Annuler");
-        }
-        private void LogIn_Load(object sender, EventArgs e)
-        {
-            //culture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-            ////users = DBconnection.getAllUsers();
-            //if (culture == "FR")
-            //{
-            //    LoginToFrench();
-            //}
-        }
-
-        static public int FindUser(string userName, string password)
-        {
-            string query = @"SELECT userID FROM user WHERE userName = @userName AND password = @password";
-            MySqlCommand cmd = new MySqlCommand(query, DBconnection.conn);
-            
-
-            cmd.Parameters.AddWithValue("userName", userName);
-            cmd.Parameters.AddWithValue("password", password);
-
-            MySqlDataReader reader = cmd.ExecuteReader();
-            if (reader.HasRows)
-            {
-                reader.Read();
-                DBconnection.SetUserId(Convert.ToInt32(reader[0]));
-                DBconnection.SetUserName(userName);
-                reader.Close();
-                return DBconnection.GetUserID();
-            }
-            return 0;
-        }
 
         private void btnLogIn_Click(object sender, EventArgs e)
         {
-            try
+            string userName = tbUsername.Text;
+            string password = tbPassword.Text;
+            
+            string loginQuery = @"SELECT * FROM user WHERE username = @userName and password = @password";
+
+            DataTable dataTable = new DataTable();
+
+            MySqlCommand mySqlCommand = new MySqlCommand(loginQuery, DBconnection.conn);
+            mySqlCommand.Parameters.AddWithValue("@userName", userName);
+            mySqlCommand.Parameters.AddWithValue("@password", password);
+
+            //mySqlCommand.Connection = conn;
+            _ = new MySqlDataAdapter(mySqlCommand).Fill(dataTable);
+
+
+            string folderPath = @"C:\UserLoginLog";
+            string fileName = @"\LoginLog.txt";
+            fileName = folderPath + fileName;
+
+            if (!Directory.Exists(folderPath))
             {
-                if (FindUser(tbUsername.Text, tbPassword.Text) !=0)
-                {
-                    var appointments = new Appointments();
-                    appointments.Show();
-                    Hide();
-
-
-                    //if (culture == "FR")
-                    //{
-                    //    throw new LoginException("Doit avoir un nom d'utilisateur et un mot de passe pour se connecter.");
-                    //}
-                    //throw new LoginException("Must have username and password to log in.");
-                }
-
-                else 
-                {
-                    if (culture == "FR")
-                    {
-                        throw new LoginException("Nom d'utilisateur ou mot de passe incorrect.");
-                    }
-                    throw new LoginException("Username or password incorrect.");
-                }
-                //Todo Fix Log Activity
-                //ToLog.logActivity(DBconnection.GetUserID());
-
-                //var MainMenu = new MainMenu();
-                //MainMenu.Show();
-                //this.Hide();
+                Directory.CreateDirectory(folderPath);
             }
 
-            catch (LoginException error)
+            if (dataTable.Rows.Count <= 0)
             {
-                //lblError.Text = error.Message;
+                MessageBox.Show(invalidLogin);
+
+                using (StreamWriter userLoginFile = File.AppendText(fileName))
+                {
+                    string loginResult = "Failed login for user: " + userName + DateTime.UtcNow.ToString("yyyy.MM.dd hh:mm:ss");
+
+                    userLoginFile.WriteLine(loginResult);
+                    userLoginFile.Close();
+                }
+                return;
+            }
+            else
+            {
+                using (StreamWriter userLoginFile = File.AppendText(fileName))
+                {
+                    string loginResult = "User " + userName + " logged in at " + DateTime.UtcNow.ToString("yyyy.MM.dd hh:mm:ss");
+
+                    userLoginFile.WriteLine(loginResult);
+                    userLoginFile.Close();
+                }
+
+                Appointments appointments = new Appointments();
+                appointments.Show();
+                this.Hide();
             }
         }
+
+        
+
+
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
+
     }
 }

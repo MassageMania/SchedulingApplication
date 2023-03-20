@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Globalization;
+using System.Data;
 
 namespace Scheduling_Appointment
 {
@@ -91,6 +92,7 @@ namespace Scheduling_Appointment
                 string lastUpdatedBy = dataReader[14].ToString();
 
             }
+            dataReader.Close();
         }
         //Todo write as bool 
         public static int overlapAppointment(DateTime start, DateTime end)
@@ -114,6 +116,7 @@ namespace Scheduling_Appointment
                 int result = count == "0" ? 0 : 1;
                 return result;
             }
+            dataReader.Close();
             return 0;
         }
 
@@ -122,8 +125,6 @@ namespace Scheduling_Appointment
         public static void addAppointment(int customerId, string location, string type, DateTime start, DateTime end)
         {
             DateTime now = DateTime.Now;
-           
-
             string query = @"INSERT INTO appointment VALUES(NULL, @customerId, @userId, 
                             @location, 'not needed', 'not needed', 'not needed', @type, 'not needed',
                             @start, @end, Now(), 'user', Now(), 'user')";
@@ -152,25 +153,7 @@ namespace Scheduling_Appointment
             cmd.ExecuteNonQuery();
         }
 
-        //public static void updateAppointment(Appointment appointment, int customerId, string type, DateTime start, DateTime end)
-        //{
-        //    DateTime now = DateTime.Now;
-        //    string nowString = now.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
-        //    string query = $"UPDATE appointment SET customerId = {customerId}, " +
-        //        $"userId={MainMenu.LoggedInUser.UserID}, type= '{type}', " +
-        //        $"start'{start.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo)}', " +
-        //        $"end='{end.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo)}, " +
-        //        $"lastUpdated = '{nowString}', " +
-        //        $"lastUpdateBy='{MainMenu.LoggedInUser.UserName}" +
-        //        $"WHERE appointmentId={appointment.AppointmentId};";
-        //    MySqlCommand cmd = new MySqlCommand(query, conn);
-        //    cmd.ExecuteNonQuery();
-
-        //    Appointment updateAppointment = new Appointment(appointment.AppointmentId, customerId, MainMenu.LoggedInUser.UserID, type, start, end, appointment.CreateDate, appointment.CreatedBy, now, MainMenu.LoggedInUser.UserName);
-            
-        //}
-
-        public static void getCustomer()
+          public static void getCustomer()
         {
             string query = "SELECT * FROM customer";
             MySqlCommand cmd = new MySqlCommand(query, conn);
@@ -187,7 +170,7 @@ namespace Scheduling_Appointment
                 DateTime lastUpdated = Convert.ToDateTime(dataReader[6]).ToLocalTime();
                 string lastUpdatedBy = dataReader[7].ToString();
 
-            }
+            }dataReader.Close();
         }
 
         public static int addCustomer(int customerId, string customerName, int addressId, string user)
@@ -291,6 +274,7 @@ namespace Scheduling_Appointment
                 string lastUpdatedBy = dataReader[9].ToString();
 
             }
+            dataReader.Close();
         }
 
        
@@ -305,14 +289,6 @@ namespace Scheduling_Appointment
         public static void upDateAddress(Address address, string address1, string address2, int cityId, string postalCode, string phone, string user)
         {
 
-            //Original
-            //DateTime now = DateTime.Now;
-            //string nowString = now.ToUniversalTime().ToString("yy-MM-dd HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
-            //string query = $"UPDATE address SET address={address1}, address2={address2}, cityId={cityId}, postalCode={postalCode}, phone={phone}, lastUpdated={nowString}, lastUpdateBy={user} WHERE addressId={address.AddressId};";
-            //MySqlCommand cmd = new MySqlCommand(query, conn);
-            //cmd.ExecuteNonQuery();
-
-            //Option 2
             string query = @"UPDATE address SET address = @address1, adress2 = @address2, 
                            cityId = @cityId, postalCode = @postalCode, phone = @phone, lastUpdate = Now(), lastUpdatedBy = @user";
 
@@ -330,6 +306,17 @@ namespace Scheduling_Appointment
             cmd.ExecuteNonQuery();
         }
 
-
+        public DataTable TableReader(string s, DataTable dataTable)
+        {
+            using (MySqlConnection connect = new MySqlConnection(connectionString))
+            {
+                connect.Open();
+                MySqlCommand command = new MySqlCommand(s, connect);
+                MySqlDataReader reader = command.ExecuteReader();
+                dataTable.Load(reader);
+                connect.Close();
+                return dataTable;
+            }
+        }
     }
 }
