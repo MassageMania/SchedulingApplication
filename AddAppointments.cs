@@ -18,11 +18,32 @@ namespace Scheduling_Appointment
         public AddModAppointments()
         {
             InitializeComponent();
-            FillCBUser();
-            FillCBCustomer();
-                    
+            LoadUser();
+            LoadCustomer();
+            LoadAppointmentTypes();
+
         }
-        void FillCBUser()
+
+        //Loads Combo Box for Types
+        private void LoadAppointmentTypes()
+        {
+            List<string> appointmentTypes = new List<string>
+            {
+                "",
+                "Scrum",
+                "Presentation",
+                "Orientation - New Hire",
+                "Lunch",
+                "Customer - New Contract",
+                "Customer - Exisitng Contract"
+            };
+
+            //lambda expression to simplify loaded type cb dropdown
+            appointmentTypes = appointmentTypes.OrderBy(type => type).ToList();
+            cbType.DataSource = appointmentTypes;
+        }
+
+        void LoadUser()
         {
             string fillUser = @"SELECT userName 
                                 FROM user";
@@ -42,7 +63,7 @@ namespace Scheduling_Appointment
             cbUser.DisplayMember = ds.Tables[0].Columns[0].ToString();
         }
 
-        void FillCBCustomer()
+        void LoadCustomer()
         {
             string fillUser = @"SELECT customerName 
                                 FROM customer";
@@ -75,7 +96,7 @@ namespace Scheduling_Appointment
                 return false;
             }
 
-            if (tbType.Text == null)
+            if (cbType.Text == null)
             {
                 MessageBox.Show("Appointment type is missing.");
                 return false;
@@ -131,6 +152,7 @@ namespace Scheduling_Appointment
             return true;
         
         }
+
         private bool IsOverlapAppointment()
         {
             DataTable dataTable = new DataTable();
@@ -244,7 +266,7 @@ namespace Scheduling_Appointment
             string appointmentTitle = tbTitle.Text;
             string appointmentDescription = tbDescription.Text;
             string appointmentContact = tbContact.Text;
-            string appointmentType = tbType.Text;
+            string appointmentType = cbType.Text;
             string appointmentLocation = tbLocation.Text;
             string customerName = cbCustomerName.Text;
             string userName = cbUser.Text;

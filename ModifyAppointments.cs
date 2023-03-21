@@ -308,6 +308,7 @@ namespace Scheduling_Appointment
             command3.Parameters.AddWithValue("@start", start);
             command3.Parameters.AddWithValue("@end", end);
 
+
             int adapter = new MySqlDataAdapter(command).Fill(dataTable);
             int adapter1 = new MySqlDataAdapter(command2).Fill(dataTable);
             int adapter2 = new MySqlDataAdapter(command3).Fill(dataTable);
@@ -352,7 +353,7 @@ namespace Scheduling_Appointment
                 "Scrum",
                 "Presentation",
                 "Orientation - New Hire",
-                "Scrum of Scrums",
+                "Lunch",
                 "Customer - New Contract",
                 "Customer - Exisitng Contract"
             };

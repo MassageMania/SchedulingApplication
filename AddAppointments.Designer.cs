@@ -41,7 +41,6 @@ namespace Scheduling_Appointment
             this.lblContact = new System.Windows.Forms.Label();
             this.tbDescription = new System.Windows.Forms.TextBox();
             this.tbContact = new System.Windows.Forms.TextBox();
-            this.tbType = new System.Windows.Forms.TextBox();
             this.dtpStart = new System.Windows.Forms.DateTimePicker();
             this.dtpEnd = new System.Windows.Forms.DateTimePicker();
             this.lblUserId = new System.Windows.Forms.Label();
@@ -51,6 +50,7 @@ namespace Scheduling_Appointment
             this.lblAppointmentId = new System.Windows.Forms.Label();
             this.cbUser = new System.Windows.Forms.ComboBox();
             this.tbAppointmentID = new System.Windows.Forms.TextBox();
+            this.cbType = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // lblCustomerName
@@ -169,14 +169,6 @@ namespace Scheduling_Appointment
             this.tbContact.Size = new System.Drawing.Size(262, 26);
             this.tbContact.TabIndex = 10;
             // 
-            // tbType
-            // 
-            this.tbType.Location = new System.Drawing.Point(145, 241);
-            this.tbType.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tbType.Name = "tbType";
-            this.tbType.Size = new System.Drawing.Size(218, 26);
-            this.tbType.TabIndex = 5;
-            // 
             // dtpStart
             // 
             this.dtpStart.CustomFormat = "MM/dd/yyyy HH:mm:ss";
@@ -257,11 +249,20 @@ namespace Scheduling_Appointment
             this.tbAppointmentID.Size = new System.Drawing.Size(218, 26);
             this.tbAppointmentID.TabIndex = 1;
             // 
+            // cbType
+            // 
+            this.cbType.FormattingEnabled = true;
+            this.cbType.Location = new System.Drawing.Point(144, 239);
+            this.cbType.Name = "cbType";
+            this.cbType.Size = new System.Drawing.Size(218, 28);
+            this.cbType.TabIndex = 32;
+            // 
             // AddModAppointments
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(379, 589);
+            this.Controls.Add(this.cbType);
             this.Controls.Add(this.tbAppointmentID);
             this.Controls.Add(this.cbUser);
             this.Controls.Add(this.lblAppointmentId);
@@ -271,7 +272,6 @@ namespace Scheduling_Appointment
             this.Controls.Add(this.lblUserId);
             this.Controls.Add(this.dtpEnd);
             this.Controls.Add(this.dtpStart);
-            this.Controls.Add(this.tbType);
             this.Controls.Add(this.tbContact);
             this.Controls.Add(this.tbDescription);
             this.Controls.Add(this.lblContact);
@@ -306,7 +306,6 @@ namespace Scheduling_Appointment
         private System.Windows.Forms.Label lblContact;
         private System.Windows.Forms.TextBox tbDescription;
         private System.Windows.Forms.TextBox tbContact;
-        private System.Windows.Forms.TextBox tbType;
         private System.Windows.Forms.DateTimePicker dtpStart;
         private System.Windows.Forms.DateTimePicker dtpEnd;
         private System.Windows.Forms.Label lblUserId;
@@ -316,5 +315,6 @@ namespace Scheduling_Appointment
         private System.Windows.Forms.Label lblAppointmentId;
         private System.Windows.Forms.ComboBox cbUser;
         private System.Windows.Forms.TextBox tbAppointmentID;
+        private System.Windows.Forms.ComboBox cbType;
     }
 }

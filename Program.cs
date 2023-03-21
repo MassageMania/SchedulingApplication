@@ -10,8 +10,7 @@ namespace Scheduling_Appointment
     {
         /// <summary>
         /// The main entry point for the application.
-        /// Both Lambda's are in Modify appointments.
-        /// 
+        ///  
         /// A.   Create a log-in form that can determine the user’s location and translate log-in and error control messages (e.g., “The username and password did not match.”) into the user’s language and in one additional language.
         ///     -Log In.cs
         ///     -two languages log in dependent on iso
@@ -33,14 +32,21 @@ namespace Scheduling_Appointment
         ///     ** 3 Views of appointments Week, Month, and All.  Theres also a DTP which can be used to select dates months out **
         /// 
         /// E.Provide the ability to automatically adjust appointment times based on user time zones and daylight-saving time
-        ///     //Todo
+        ///    - AddAppointments.cs  Upon Add appointments are converted to UTC, the creation and updates to the table are based in User Time Zones.
         /// 
         /// F.Write exception controls to prevent each of the following.You may use the same mechanism of exception control more than once, but you must incorporate at least two different mechanisms of exception control.
         ///    •   scheduling an appointment outside business hours
-        ///    •   scheduling overlapping appointments
+        ///    - AddAppointments.cs - Lines 218-237 
+        ///    - ModifyAppointments.cs - Lines 324  - 333
+        ///    •   scheduling overlapping appointments  //Todo Doesnt work
+        ///    - AddAppointments.cs - Lines 266 - 322 
+        ///    - ModifyAppointments.cs - Lines 135 - 216
         ///    •   entering nonexistent or invalid customer data
+        ///    - CustomerRecods.cs  Lines 72 through ~110
+        ///    - ModifyAppointments.cs Lines 52 - 133
+        ///    - Add Appointments Lines 64-131
         ///    •   entering an incorrect username and password
-        ///     //Todo
+        ///     - Works
         ///     
         /// G.Write two or more lambda expressions to make your program more efficient, justifying the use of each lambda expression with an in-line comment.
         ///     - ModifyAppointments.cs  ** Lines 335 -337    &  Lines 360-362 **

@@ -157,6 +157,7 @@ namespace Scheduling_Appointment
             }
         }
 
+        //Todo Error Code Zip to prevent Letters being used.
         public void AddAddressToDB()
         {
             var currentUser = Environment.UserName;
@@ -293,13 +294,11 @@ namespace Scheduling_Appointment
                     AddCityToDB();
                     AddAddressToDB();
                     AddCustomerToDB();
-                    GetAllCustomers();
+                    customerRecordsDGV.DataSource = GetAllCustomers();
                 }
                 else if (dialog == DialogResult.No)
                 {
-                    // Event Cancel
-                    // Todo
-                    //e.Cancel = true;
+                    MessageBox.Show("Add canceled.");
                 }
     
             }
@@ -313,7 +312,7 @@ namespace Scheduling_Appointment
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
-        {   // TODO : Another Query Identifying if customer has appointments
+        { 
 
 
             DialogResult dialog = MessageBox.Show("Are you sure you want to delete customer and associated appointments?", "Delete", MessageBoxButtons.YesNo);
@@ -328,8 +327,6 @@ namespace Scheduling_Appointment
                 MySqlCommand sqlCommand2 = new MySqlCommand(sqlDoTheyHaveAppts, DBconnection.conn);
                 sqlCommand2.Parameters.AddWithValue("@customerId", customerId);
                 sqlCommand2.ExecuteNonQuery();
-
-                //if (AppointmentCheck(true))
 
                 string sqlDel = @"DELETE FROM Customer 
                             WHERE customerName = @customerName";
@@ -372,12 +369,12 @@ namespace Scheduling_Appointment
             //sqlCommand.Parameters.AddWithValue("@lastUpdateBy", DBconnection.GetUserID());
             
 
-            // Todo  Make it Refresh
+           
             DialogResult dialog = MessageBox.Show("Are you sure you want to modify this customer?","Modify", MessageBoxButtons.YesNo);
             if(dialog == DialogResult.Yes)
             {
                 sqlCommand.ExecuteNonQuery();
-                GetAllCustomers();
+                customerRecordsDGV.DataSource = GetAllCustomers();
             }
             else if (dialog == DialogResult.No)
             {
