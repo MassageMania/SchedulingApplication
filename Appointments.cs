@@ -191,7 +191,7 @@ namespace Scheduling_Appointment
         {
             var addAppointments = new AddModAppointments();
             addAppointments.Show();
-    
+            this.Close();
         }
 
         private void btnAllAppointments_Click(object sender, EventArgs e)

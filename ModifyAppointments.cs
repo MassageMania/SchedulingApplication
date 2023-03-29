@@ -263,63 +263,46 @@ namespace Scheduling_Appointment
             reader.Close();
         }
 
-        private bool IsOverlapAppointment()
+        //function for checking if there's appointment overlap
+        bool IsOverlapAppointment()
         {
-            DataTable dataTable = new DataTable();
-
-            DateTime start = dtpStart.Value.ToUniversalTime();
-            DateTime end = dtpEnd.Value.ToUniversalTime();
-            int userID = 0;
-            int appointmentID = int.Parse(tbAppointmentId.Text);
-            string userName = cbUser.Text;
-
-            string getUserID = @"SELECT userId FROM user WHERE userName = @userName";
-
-            MySqlCommand commandUser = new MySqlCommand(getUserID, DBconnection.conn);
-            commandUser.Parameters.AddWithValue("@userName", userName);
-
-            MySqlDataReader readerUser = commandUser.ExecuteReader();
-
-            while (readerUser.Read())
+            bool result = false;
+            try
             {
-                userID = readerUser.GetInt32("userId");
+                DateTime start = dtpStart.Value.ToUniversalTime();
+                DateTime end = dtpEnd.Value.ToUniversalTime();
+
+                string query = @"SELECT COUNT(*) 
+                              FROM appointment 
+                              WHERE start 
+                              BETWEEN @start
+                              AND @end
+                              AND userId=@userId 
+                              OR end 
+                              BETWEEN @start 
+                              AND @end 
+                              AND userId=@userId";
+                var mySqlCommand = new MySqlCommand(query, DBconnection.conn);
+                mySqlCommand.Parameters.AddWithValue("@start", start);
+                mySqlCommand.Parameters.AddWithValue("@end", end);
+                mySqlCommand.Parameters.AddWithValue("@userId", DBconnection.GetUserID());
+
+                int overlapIndex = Convert.ToInt32(mySqlCommand.ExecuteScalar());
+
+                if (overlapIndex != 0)
+                {
+                    result = false;
+                }
+                else
+                {
+                    result = true;
+                }
             }
-            readerUser.Close();
-
-            string getStartTime = @"SELECT start FROM appointment WHERE userId = @userID and appointmentId != @appointmentID and start >= @start and start < @end";
-            string secondSQLStatement = @"SELECT end FROM appointment WHERE userId = @userID and appointmentId != @appointmentID and end > @start and end <= @end";
-            string thirdSQLStatement = @"SELECT start FROM appointment WHERE userId = @userID and appointmentId != @appointmentID and start <= @start and end >= @end";
-
-            MySqlCommand command = new MySqlCommand(getStartTime, DBconnection.conn);
-            command.Parameters.AddWithValue("@userID", userID);
-            command.Parameters.AddWithValue("@appointmentID", appointmentID);
-            command.Parameters.AddWithValue("@start", start);
-            command.Parameters.AddWithValue("@end", end);
-
-            MySqlCommand command2 = new MySqlCommand(secondSQLStatement, DBconnection.conn);
-            command2.Parameters.AddWithValue("@userID", userID);
-            command2.Parameters.AddWithValue("@appointmentID", appointmentID);
-            command2.Parameters.AddWithValue("@start", start);
-            command2.Parameters.AddWithValue("@end", end);
-
-            MySqlCommand command3 = new MySqlCommand(thirdSQLStatement, DBconnection.conn);
-            command3.Parameters.AddWithValue("@userID", userID);
-            command3.Parameters.AddWithValue("@appointmentID", appointmentID);
-            command3.Parameters.AddWithValue("@start", start);
-            command3.Parameters.AddWithValue("@end", end);
-
-
-            int adapter = new MySqlDataAdapter(command).Fill(dataTable);
-            int adapter1 = new MySqlDataAdapter(command2).Fill(dataTable);
-            int adapter2 = new MySqlDataAdapter(command3).Fill(dataTable);
-
-            if (dataTable.Rows.Count > 0)
+            catch (MySqlException ex)
             {
-                MessageBox.Show("There is already an appointment at this time. Please select a new start time.");
-                return true;
+                MessageBox.Show("Error!" + ex);
             }
-
-            return false;
+            return result;
         }
 
         private bool IsOutsideBusinessHours()
@@ -385,6 +368,8 @@ namespace Scheduling_Appointment
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
+            Appointments appointment = new Appointments();
+            appointment.Show();
         }
 
        

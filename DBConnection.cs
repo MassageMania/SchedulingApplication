@@ -13,7 +13,7 @@ namespace Scheduling_Appointment
 {
     public class DBconnection
     {
-        public static string connectionString = "Server=localhost;Port=3306;Username=sqlUser;Password=Password!;Database=client_schedule";
+        public static string connectionString = "Server=localhost;Port=3306;Username=sqlUser;Password=Passw0rd!;Database=client_schedule";
 
         public static MySqlConnection conn { get; set; }
 
@@ -71,35 +71,6 @@ namespace Scheduling_Appointment
             userName = currentUserName;
         }
        
-
-       
-        //Todo write as bool 
-        public static int overlapAppointment(DateTime start, DateTime end)
-        {
-            //var startDateTime = ;
-            //var endDateTime = ;
-            var query = @"SELECT count(*) FROM appointment 
-                        WHERE (('@startDateTime' > start 
-                        AND '@startDateTime' < end) 
-                        OR ('@endDateTime'> start 
-                        AND ''@endDateTime' < end)) 
-                        AND end > now() order by start limit 1;";
-
-            MySqlCommand command = new MySqlCommand(query, conn);
-            MySqlDataReader dataReader = command.ExecuteReader();
-
-            if (dataReader.HasRows)
-            {
-                dataReader.Read();
-                string count = dataReader[0].ToString();
-                int result = count == "0" ? 0 : 1;
-                return result;
-            }
-            dataReader.Close();
-            return 0;
-        }
-
-
         public DataTable TableReader(string s, DataTable dataTable)
         {
             using (MySqlConnection connect = new MySqlConnection(connectionString))

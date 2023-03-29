@@ -9,6 +9,8 @@ namespace Scheduling_Appointment
     static class Program
     {
         /// <summary>
+        /// 
+        /// Assment Rubric : 
         /// The main entry point for the application.
         ///  
         /// A.   Create a log-in form that can determine the user’s location and translate log-in and error control messages (e.g., “The username and password did not match.”) into the user’s language and in one additional language.
@@ -35,17 +37,22 @@ namespace Scheduling_Appointment
         ///    - AddAppointments.cs  Upon Add appointments are converted to UTC, the creation and updates to the table are based in User Time Zones.
         /// 
         /// F.Write exception controls to prevent each of the following.You may use the same mechanism of exception control more than once, but you must incorporate at least two different mechanisms of exception control.
-        ///    •   scheduling an appointment outside business hours
+        ///  
+        /// •   scheduling an appointment outside business hours
         ///    - AddAppointments.cs - Lines 218-237 
         ///    - ModifyAppointments.cs - Lines 324  - 333
-        ///    •   scheduling overlapping appointments  //Todo Doesnt work
-        ///    - AddAppointments.cs - Lines 266 - 322 
-        ///    - ModifyAppointments.cs - Lines 135 - 216
-        ///    •   entering nonexistent or invalid customer data
+        ///    
+        /// •   scheduling overlapping appointments  
+        ///   
+        ///    - AddAppointments.cs - Lines 158 - 198 
+        ///    - ModifyAppointments.cs - Lines 266 - 306
+        /// 
+        /// •   entering nonexistent or invalid customer data
         ///    - CustomerRecods.cs  Lines 72 through ~110
         ///    - ModifyAppointments.cs Lines 52 - 133
         ///    - Add Appointments Lines 64-131
-        ///    •   entering an incorrect username and password
+        /// 
+        /// •   entering an incorrect username and password
         ///     - Works
         ///     
         /// G.Write two or more lambda expressions to make your program more efficient, justifying the use of each lambda expression with an in-line comment.
@@ -53,7 +60,7 @@ namespace Scheduling_Appointment
         ///     - Add Appointments.cs  ** Lines  229-231  **
         /// 
         /// H.Write code to provide reminders and alerts 15 minutes in advance of an appointment, based on the user’s log-in.
-        ///    //Todo
+        ///    -Log In.cs **  Line 109-141 **
         ///    
         /// I.Provide the ability to generate each of the following reports using the collection classes:
         ///    •   number of appointment types by month

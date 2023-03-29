@@ -51,6 +51,7 @@ namespace Scheduling_Appointment
             this.cbUser = new System.Windows.Forms.ComboBox();
             this.tbAppointmentID = new System.Windows.Forms.TextBox();
             this.cbType = new System.Windows.Forms.ComboBox();
+            this.lblInstructions = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblCustomerName
@@ -257,11 +258,22 @@ namespace Scheduling_Appointment
             this.cbType.Size = new System.Drawing.Size(218, 28);
             this.cbType.TabIndex = 32;
             // 
+            // lblInstructions
+            // 
+            this.lblInstructions.AutoSize = true;
+            this.lblInstructions.Location = new System.Drawing.Point(382, 38);
+            this.lblInstructions.Name = "lblInstructions";
+            this.lblInstructions.Size = new System.Drawing.Size(199, 140);
+            this.lblInstructions.TabIndex = 56;
+            this.lblInstructions.Text = "Upon form opening though\r\n information is carried over \r\nyou must reselect:\r\n C.N" +
+    "ame\r\nUser and \r\nType.\r\n from combo boxes again.";
+            // 
             // AddModAppointments
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(379, 589);
+            this.ClientSize = new System.Drawing.Size(599, 589);
+            this.Controls.Add(this.lblInstructions);
             this.Controls.Add(this.cbType);
             this.Controls.Add(this.tbAppointmentID);
             this.Controls.Add(this.cbUser);
@@ -316,5 +328,6 @@ namespace Scheduling_Appointment
         private System.Windows.Forms.ComboBox cbUser;
         private System.Windows.Forms.TextBox tbAppointmentID;
         private System.Windows.Forms.ComboBox cbType;
+        private System.Windows.Forms.Label lblInstructions;
     }
 }

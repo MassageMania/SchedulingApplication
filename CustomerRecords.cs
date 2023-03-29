@@ -365,9 +365,7 @@ namespace Scheduling_Appointment
             sqlCommand.Parameters.AddWithValue("@city", tbCity.Text);
             sqlCommand.Parameters.AddWithValue("@country", tbCountry.Text);
             sqlCommand.Parameters.AddWithValue("@customerId", tbId.Text);
-            //sqlCommand.Parameters.AddWithValue("@lastUpdate", DateTime.Now);
-            //sqlCommand.Parameters.AddWithValue("@lastUpdateBy", DBconnection.GetUserID());
-            
+           
 
            
             DialogResult dialog = MessageBox.Show("Are you sure you want to modify this customer?","Modify", MessageBoxButtons.YesNo);
