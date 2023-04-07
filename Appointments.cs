@@ -22,7 +22,7 @@ namespace Scheduling_Appointment
         {
             InitializeComponent();
 
-            // Mark Kinkaid Sword and shield - Sword DGV
+            DataTable dt = new DataTable();
             appointmentsDGV.DataSource = GetAllAppointments();
             appointmentsDGV.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             appointmentsDGV.ReadOnly = true;
@@ -46,7 +46,15 @@ namespace Scheduling_Appointment
             appointmentsDGV.Columns[13].HeaderText = "Last Update";
             appointmentsDGV.Columns[14].HeaderText = "Last Updated By";
 
+            for (int idx = 0; idx < dt.Rows.Count; idx++) 
+            {
+                dt.Rows[idx]["start"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)dt.Rows[idx]["start"], TimeZoneInfo.Local).ToString();
+            }
 
+            for (int idx = 0; idx < dt.Rows.Count; idx++)
+            {
+                dt.Rows[idx]["end"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)dt.Rows[idx]["end"], TimeZoneInfo.Local).ToString();
+            }
         }
 
         public DataTable GetAllAppointments()
@@ -55,9 +63,20 @@ namespace Scheduling_Appointment
             allAppointments = new DataTable();
             string getAppointments = "SELECT * from Appointment";
             MySqlCommand sqlCommand = new MySqlCommand(getAppointments, DBconnection.conn);
-
+           
             MySqlDataAdapter sqlDataAdapter = new MySqlDataAdapter(sqlCommand);
             sqlDataAdapter.Fill(allAppointments);
+
+            for (int idx = 0; idx < allAppointments.Rows.Count; idx++)
+            {
+                allAppointments.Rows[idx]["start"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)allAppointments.Rows[idx]["start"], TimeZoneInfo.Local).ToString();
+            }
+
+            for (int idx = 0; idx < allAppointments.Rows.Count; idx++)
+            {
+                allAppointments.Rows[idx]["end"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)allAppointments.Rows[idx]["end"], TimeZoneInfo.Local).ToString();
+            }
+
             return allAppointments;
         }
 
@@ -208,6 +227,7 @@ namespace Scheduling_Appointment
             string getAppointments = @"SELECT * from Appointment 
                                        WHERE userId = @userId 
                                        AND start BETWEEN @startDate AND @endDate";
+
 
             MySqlCommand sqlCommand = new MySqlCommand(getAppointments, DBconnection.conn);
             sqlCommand.Parameters.AddWithValue("@userId", DBconnection.GetUserID());

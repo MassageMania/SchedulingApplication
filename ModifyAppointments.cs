@@ -13,17 +13,7 @@ namespace Scheduling_Appointment
 {
     public partial class ModifyAppointments : Form
     {
-        private int _appointmentId;
-        private int _customerId;
-        private int _userId;
-        private string _type;
-        private string _start;
-        private string _end;
-        private string _lastUpdate;
-        private string _lastUpdatedBy;
-
-
-
+      
         public ModifyAppointments()
         {
             InitializeComponent();
@@ -124,6 +114,8 @@ namespace Scheduling_Appointment
                 return false;
             }
 
+            //Todo Overlap appointment appears to be broken.
+
             if (IsOverlapAppointment())
             {
                 return false;
@@ -214,21 +206,7 @@ namespace Scheduling_Appointment
             }
         }
 
-        private void btnSubmitAppointment_Click(object sender, EventArgs e)
-        {
-            if (IsFormValid())
-            {
-                UpdateAppointmentDB();
-
-                Appointments appointments = new Appointments();
-                appointments.Show();
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show("Form is invalid. Please review and resubmit.");
-            }
-        }
+     
 
         //Loads Combo Box for Customers
         private void LoadCustomerData()
@@ -266,11 +244,8 @@ namespace Scheduling_Appointment
         //function for checking if there's appointment overlap
         bool IsOverlapAppointment()
         {
-            bool result = false;
-            try
-            {
-                DateTime start = dtpStart.Value.ToUniversalTime();
-                DateTime end = dtpEnd.Value.ToUniversalTime();
+            DateTime start = dtpStart.Value.ToUniversalTime();
+            DateTime end = dtpEnd.Value.ToUniversalTime();
 
                 string query = @"SELECT COUNT(*) 
                               FROM appointment 
@@ -289,19 +264,16 @@ namespace Scheduling_Appointment
 
                 int overlapIndex = Convert.ToInt32(mySqlCommand.ExecuteScalar());
 
-                if (overlapIndex != 0)
-                {
-                    result = false;
-                }
-                else
-                {
-                    result = true;
-                }
-            }
-            catch (MySqlException ex)
+            bool result;
+            if (overlapIndex != 0)
             {
-                MessageBox.Show("Error!" + ex);
+                result = true;
             }
+            else
+            {
+                result = false;
+            }
+
             return result;
         }
 
@@ -312,7 +284,7 @@ namespace Scheduling_Appointment
 
             TimeSpan businessStartTime, businessEndTime;
             businessStartTime = new TimeSpan(08, 00, 00);
-            businessEndTime = new TimeSpan(17, 30, 00);
+            businessEndTime = new TimeSpan(21, 00, 00);
 
             if (start < businessStartTime || end > businessEndTime)
             {
@@ -347,7 +319,7 @@ namespace Scheduling_Appointment
         }
 
 
-
+     
 
         private void btnSave_Click(object sender, EventArgs e)
         {

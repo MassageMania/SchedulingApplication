@@ -109,6 +109,8 @@ namespace Scheduling_Appointment
 
             return true;
         }
+
+
         public void AddCustomerToDB()
         {
             var currentUser = Environment.UserName;
@@ -354,7 +356,6 @@ namespace Scheduling_Appointment
                                       postalCode = @postalCode, phone = @phone, city = @city, country = @country
                                   WHERE customerId = @customerId";
 
-            // Todo Ensure Text boxes have proper param's to enter IE - string v int v bool v datetime
            
             MySqlCommand sqlCommand = new MySqlCommand(joinUpdate, DBconnection.conn);
             sqlCommand.Parameters.AddWithValue("@customerName", tbName.Text);

@@ -183,11 +183,11 @@ namespace Scheduling_Appointment
 
                 if (overlapIndex != 0)
                 {
-                    result = false;
+                    result = true;
                 }
                 else
                 {
-                    result = true;
+                    result = false;
                 }
             }
             catch (MySqlException ex)
@@ -206,7 +206,7 @@ namespace Scheduling_Appointment
 
             TimeSpan businessStartTime, businessEndTime;
             businessStartTime = new TimeSpan(08, 00, 00);
-            businessEndTime = new TimeSpan(17, 30, 00);
+            businessEndTime = new TimeSpan(21, 00, 00);
 
             if (start < businessStartTime || end > businessEndTime)
             {
@@ -220,8 +220,7 @@ namespace Scheduling_Appointment
             return false;
         }
 
-
-        private void btnAdd_Click(object sender, EventArgs e)
+        public void AddAppointmentDB()
         {
             var currentUser = Environment.UserName;
 
@@ -244,7 +243,7 @@ namespace Scheduling_Appointment
             //getting customer ID from customer to add to appointment table 
             string getCustomerID = @"SELECT customerId FROM customer WHERE customerName = @customerName";
 
-            
+
             MySqlCommand command = new MySqlCommand(getCustomerID, DBconnection.conn);
             command.Parameters.AddWithValue("@customerName", customerName);
 
@@ -268,38 +267,52 @@ namespace Scheduling_Appointment
                 userID = readerUser.GetInt32("userId");
             }
             readerUser.Close();
-            string insertAppointment = @"INSERT INTO appointment VALUES(null, @customerId, @userId, @title, 
+
+            try
+            {
+                string insertAppointment = @"INSERT INTO appointment VALUES(null, @customerId, @userId, @title, 
                                          @description, @location, @contact, @type, @url, @start, @end,
                                         @createDate, @createdBy, @lastUpdate, @lastUpdateBy)";
-            // 
-            //, @createDate, @createdBy, @lastUpdate, @lastUpdateBy
 
-            MySqlCommand insertCommand = new MySqlCommand(insertAppointment, DBconnection.conn);
+                MySqlCommand insertCommand = new MySqlCommand(insertAppointment, DBconnection.conn);
 
-            insertCommand.Parameters.AddWithValue("@customerId", customerID);
-            insertCommand.Parameters.AddWithValue("@userId", userID);
-            insertCommand.Parameters.AddWithValue("@title", appointmentTitle);
-            insertCommand.Parameters.AddWithValue("@description", appointmentDescription);
-            insertCommand.Parameters.AddWithValue("@location", appointmentLocation);
-            insertCommand.Parameters.AddWithValue("@contact", appointmentContact);
-            insertCommand.Parameters.AddWithValue("@type", appointmentType);
-            insertCommand.Parameters.AddWithValue("@url", customerName);
-            insertCommand.Parameters.AddWithValue("@start", appointmentStart);
-            insertCommand.Parameters.AddWithValue("@end", appointmentEnd);
-            insertCommand.Parameters.AddWithValue("@createDate", appointmentCreateDate);
-            insertCommand.Parameters.AddWithValue("@createdBy", appointmentCreatedBy);
-            insertCommand.Parameters.AddWithValue("@lastUpdate", appointmentLastUpdate);
-            insertCommand.Parameters.AddWithValue("@lastUpdateBy", appointmentLastUpdateBy);
+                insertCommand.Parameters.AddWithValue("@customerId", customerID);
+                insertCommand.Parameters.AddWithValue("@userId", userID);
+                insertCommand.Parameters.AddWithValue("@title", appointmentTitle);
+                insertCommand.Parameters.AddWithValue("@description", appointmentDescription);
+                insertCommand.Parameters.AddWithValue("@location", appointmentLocation);
+                insertCommand.Parameters.AddWithValue("@contact", appointmentContact);
+                insertCommand.Parameters.AddWithValue("@type", appointmentType);
+                insertCommand.Parameters.AddWithValue("@url", customerName);
+                insertCommand.Parameters.AddWithValue("@start", appointmentStart);
+                insertCommand.Parameters.AddWithValue("@end", appointmentEnd);
+                insertCommand.Parameters.AddWithValue("@createDate", appointmentCreateDate);
+                insertCommand.Parameters.AddWithValue("@createdBy", appointmentCreatedBy);
+                insertCommand.Parameters.AddWithValue("@lastUpdate", appointmentLastUpdate);
+                insertCommand.Parameters.AddWithValue("@lastUpdateBy", appointmentLastUpdateBy);
 
-            insertCommand.ExecuteNonQuery();
+                insertCommand.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
-            //Appointments.appointmentsDGV.DataSource = Appointments.GetAllAppointmenets();
-
-            MessageBox.Show("Appointment Has been added.");
-            this.Close();
-            Appointments appointment = new Appointments();
-            appointment.Show();
-
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            if (IsFormValid())
+            {
+                AddAppointmentDB();
+                MessageBox.Show("Appointment Has been added.");
+                this.Close();
+                Appointments appointment = new Appointments();
+                appointment.Show();
+            }
+            else
+            {
+                MessageBox.Show("Form is invalid. Please review and resubmit.");
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

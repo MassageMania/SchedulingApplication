@@ -82,9 +82,18 @@ namespace Scheduling_Appointment
             command.Parameters.AddWithValue("@type", type);
             command.Parameters.AddWithValue("@dtNow", dtNow);
             command.Parameters.AddWithValue("@dt30Days", dt30Days);
-
+            
             int adapter = new MySqlDataAdapter(command).Fill(dataTable);
 
+            for (int idx = 0; idx < dataTable.Rows.Count; idx++)
+            {
+                dataTable.Rows[idx]["start"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)dataTable.Rows[idx]["start"], TimeZoneInfo.Local).ToString();
+            }
+
+            for (int idx = 0; idx < dataTable.Rows.Count; idx++)
+            {
+                dataTable.Rows[idx]["end"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)dataTable.Rows[idx]["end"], TimeZoneInfo.Local).ToString();
+            }
             if (dataTable.Rows.Count > 0)
             {
                 dgvReport.DataSource = dataTable;
@@ -130,8 +139,18 @@ namespace Scheduling_Appointment
 
             MySqlCommand command = new MySqlCommand(getUserType, DBconnection.conn);
             command.Parameters.AddWithValue("@userID", userID);
+            
 
             int adapter = new MySqlDataAdapter(command).Fill(dataTable);
+            for (int idx = 0; idx < dataTable.Rows.Count; idx++)
+            {
+                dataTable.Rows[idx]["start"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)dataTable.Rows[idx]["start"], TimeZoneInfo.Local).ToString();
+            }
+
+            for (int idx = 0; idx < dataTable.Rows.Count; idx++)
+            {
+                dataTable.Rows[idx]["end"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)dataTable.Rows[idx]["end"], TimeZoneInfo.Local).ToString();
+            }
 
             if (dataTable.Rows.Count > 0)
             {
@@ -179,8 +198,19 @@ namespace Scheduling_Appointment
 
             MySqlCommand commandCustomer = new MySqlCommand(getAppointmentType, DBconnection.conn);
             commandCustomer.Parameters.AddWithValue("@customerID", customerID);
+            
 
             int adapter = new MySqlDataAdapter(commandCustomer).Fill(dataTable);
+            
+            for (int idx = 0; idx < dataTable.Rows.Count; idx++)
+            {
+                dataTable.Rows[idx]["start"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)dataTable.Rows[idx]["start"], TimeZoneInfo.Local).ToString();
+            }
+
+            for (int idx = 0; idx < dataTable.Rows.Count; idx++)
+            {
+                dataTable.Rows[idx]["end"] = TimeZoneInfo.ConvertTimeFromUtc((DateTime)dataTable.Rows[idx]["end"], TimeZoneInfo.Local).ToString();
+            }
 
             if (dataTable.Rows.Count > 0)
             {
